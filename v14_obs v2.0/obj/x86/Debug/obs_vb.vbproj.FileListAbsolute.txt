@@ -1,0 +1,3 @@
+C:\Users\User\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.exe
+C:\Users\User\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.xml
+C:\Users\User\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.pdb

@@ -335,17 +335,7 @@ Public Class MainForm
             If e.KeyCode = Keys.W Then BtnPreset_Click(BtnPreset2, Nothing)
             If e.KeyCode = Keys.E Then BtnPreset_Click(BtnPreset3, Nothing)
             If e.KeyCode = Keys.R Then BtnPreset_Click(BtnPreset4, Nothing)
-            If e.KeyCode = Keys.A Then BtnPreset_Click(BtnPreset5, Nothing)
-            If e.KeyCode = Keys.S Then BtnPreset_Click(BtnPreset6, Nothing)
-            If e.KeyCode = Keys.D Then BtnPreset_Click(BtnPreset7, Nothing)
-            If e.KeyCode = Keys.F Then BtnPreset_Click(BtnPreset8, Nothing)
-            If e.KeyCode = Keys.Z Then BtnPreset_Click(BtnPreset9, Nothing)
-            If e.KeyCode = Keys.X Then BtnPreset_Click(BtnPreset10, Nothing)
-            If e.KeyCode = Keys.C Then BtnPreset_Click(BtnPreset11, Nothing)
-            If e.KeyCode = Keys.V Then BtnPreset_Click(BtnPreset12, Nothing)
             'If e.KeyCode = Keys.C Then CheckBoxCU.Checked = True : BtnPreset_Click(BtnPreset9, Nothing)
-            If e.KeyCode = 33 Then TextBox4.Text = Val(TextBox4.Text - 1) : BtnIrisDown_Click(Nothing, Nothing)
-            If e.KeyCode = 34 Then TextBox4.Text = Val(TextBox4.Text + 1) : BtnIrisUp_Click(Nothing, Nothing)
             If e.KeyCode = 32 Then BtnTransition_Click(Nothing, Nothing)
             If e.KeyCode = Asc(".") Then BtnCut_Click(Nothing, Nothing)
             If e.KeyCode = 17 Or e.KeyCode = Keys.O Then BtnOverlay_Click(Nothing, Nothing)
@@ -455,21 +445,17 @@ Public Class MainForm
         Globals.Cam2Dis = GetSetting("Atemswitcher", "Set", "Cam2Dis", False)
         Globals.Cam3Dis = GetSetting("Atemswitcher", "Set", "Cam3Dis", False)
         Globals.Cam4Dis = GetSetting("Atemswitcher", "Set", "Cam4Dis", False)
-        Globals.Cam5Dis = GetSetting("Atemswitcher", "Set", "Cam5Dis", False)
 
         Globals.CamIP(1) = (GetSetting("Atemswitcher", "CamIP", "1", "192.168.1.91"))
         Globals.CamIP(2) = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.92"))
         Globals.CamIP(3) = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.93"))
         Globals.CamIP(4) = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.94"))
-        Globals.CamIP(7) = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
 
         Globals.Cliptime(1) = (GetSetting("Atemswitcher", "Cliptime", "1", "60"))
         Globals.Cliptime(2) = (GetSetting("Atemswitcher", "Cliptime", "2", "60"))
         Globals.Cliptime(3) = (GetSetting("Atemswitcher", "Cliptime", "3", "60"))
         Globals.Cliptime(4) = (GetSetting("Atemswitcher", "Cliptime", "4", "60"))
 
-        BtnFast.BackColor = Color.Green
-        BtnLiveSlow.BackColor = Color.Green
         SetDefaultPresets()
         ReadPresetFile()
 
@@ -823,12 +809,6 @@ Public Class MainForm
     Sub ShowCamValues()
         Dim ad As Integer
         If (PTZLive = False) Then ad = addr Else ad = liveaddr
-        If CamIris(ad) <> 9999 Then TextBox4.Text = CamIris(ad) Else TextBox4.Text = "Auto"
-        If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
-        TextBox6.Text = CamShutter(ad)
-        TextBox7.Text = CamGain(ad) * 6 & "dB"
-        TextBox8.Text = CamWBRed(ad)
-        TextBox9.Text = 2400 + CamWBBlue(ad) * 100
         If CamFocusManual(ad) = 0 Then
             BtnFocus.BackColor = Color.Green : BtnAELock.BackColor = Color.White
         Else
@@ -921,18 +901,6 @@ Public Class MainForm
             BtnPreset2.Text = "2" : BtnPreset2.BackColor = Color.White
             BtnPreset3.Text = "3" : BtnPreset3.BackColor = Color.White
             BtnPreset4.Text = "4" : BtnPreset4.BackColor = Color.White
-            BtnPreset5.Text = "5" : BtnPreset5.BackColor = Color.White
-            BtnPreset6.Text = "6" : BtnPreset6.BackColor = Color.White
-            BtnPreset7.Text = "7" : BtnPreset7.BackColor = Color.White
-            BtnPreset8.Text = "8" : BtnPreset8.BackColor = Color.White
-            BtnPreset9.Text = "9" : BtnPreset9.BackColor = Color.White
-            BtnPreset10.Text = "10" : BtnPreset10.BackColor = Color.White
-            BtnPreset11.Text = "11" : BtnPreset11.BackColor = Color.White
-            BtnPreset12.Text = "12" : BtnPreset12.BackColor = Color.White
-            BtnPreset13.Text = "13" : BtnPreset13.BackColor = Color.White
-            BtnPreset14.Text = "14" : BtnPreset14.BackColor = Color.White
-            BtnPreset15.Text = "15" : BtnPreset15.BackColor = Color.White
-            BtnPreset16.Text = "16" : BtnPreset16.BackColor = Color.White
             Exit Sub
         End If
 
@@ -940,46 +908,12 @@ Public Class MainForm
         BtnPreset2.Text = PresetCaption((ad - 1) * 16 + 1) : BtnPreset2.BackColor = Color.White
         BtnPreset3.Text = PresetCaption((ad - 1) * 16 + 2) : BtnPreset3.BackColor = Color.White
         BtnPreset4.Text = PresetCaption((ad - 1) * 16 + 3) : BtnPreset4.BackColor = Color.White
-        BtnPreset5.Text = PresetCaption((ad - 1) * 16 + 4) : BtnPreset5.BackColor = Color.White
-        BtnPreset6.Text = PresetCaption((ad - 1) * 16 + 5) : BtnPreset6.BackColor = Color.White
-        BtnPreset7.Text = PresetCaption((ad - 1) * 16 + 6) : BtnPreset7.BackColor = Color.White
-        BtnPreset8.Text = PresetCaption((ad - 1) * 16 + 7) : BtnPreset8.BackColor = Color.White
-        BtnPreset9.Text = PresetCaption((ad - 1) * 16 + 8) : BtnPreset9.BackColor = Color.White
-        BtnPreset10.Text = PresetCaption((ad - 1) * 16 + 9) : BtnPreset10.BackColor = Color.White
-        If addr <> 7 Then
-            BtnPreset11.Text = PresetCaption((ad - 1) * 16 + 10) : BtnPreset11.BackColor = Color.White
-            BtnPreset12.Text = PresetCaption((ad - 1) * 16 + 11) : BtnPreset12.BackColor = Color.White
-            BtnPreset13.Text = PresetCaption((ad - 1) * 16 + 12) : BtnPreset13.BackColor = Color.White
-            BtnPreset14.Text = PresetCaption((ad - 1) * 16 + 13) : BtnPreset14.BackColor = Color.White
-            BtnPreset15.Text = PresetCaption((ad - 1) * 16 + 14) : BtnPreset15.BackColor = Color.White
-            BtnPreset16.Text = PresetCaption((ad - 1) * 16 + 15) : BtnPreset16.BackColor = Color.White
-        Else 'these presets not available on he2
-            BtnPreset11.Text = "" : BtnPreset11.BackColor = Color.White
-            BtnPreset12.Text = "" : BtnPreset12.BackColor = Color.White
-            BtnPreset13.Text = "" : BtnPreset13.BackColor = Color.White
-            BtnPreset14.Text = "" : BtnPreset14.BackColor = Color.White
-            BtnPreset15.Text = "" : BtnPreset15.BackColor = Color.White
-            BtnPreset16.Text = "" : BtnPreset16.BackColor = Color.White
-        End If
-
 
         If ad <= 4 Or ad = 7 Then
             If (presetstate(ad) And 1) <> 0 Then BtnPreset1.BackColor = Color.Green
             If (presetstate(ad) And 2) <> 0 Then BtnPreset2.BackColor = Color.Green
             If (presetstate(ad) And 4) <> 0 Then BtnPreset3.BackColor = Color.Green
             If (presetstate(ad) And 8) <> 0 Then BtnPreset4.BackColor = Color.Green
-            If (presetstate(ad) And 16) <> 0 Then BtnPreset5.BackColor = Color.Green
-            If (presetstate(ad) And 32) <> 0 Then BtnPreset6.BackColor = Color.Green
-            If (presetstate(ad) And 64) <> 0 Then BtnPreset7.BackColor = Color.Green
-            If (presetstate(ad) And 128) <> 0 Then BtnPreset8.BackColor = Color.Green
-            If (presetstate(ad) And &H100) <> 0 Then BtnPreset9.BackColor = Color.Green
-            If (presetstate(ad) And &H200) <> 0 Then BtnPreset10.BackColor = Color.Green
-            If (presetstate(ad) And &H400) <> 0 Then BtnPreset11.BackColor = Color.Green
-            If (presetstate(ad) And &H800) <> 0 Then BtnPreset12.BackColor = Color.Green
-            If (presetstate(ad) And &H1000) <> 0 Then BtnPreset13.BackColor = Color.Green
-            If (presetstate(ad) And &H2000) <> 0 Then BtnPreset14.BackColor = Color.Green
-            If (presetstate(ad) And &H4000) <> 0 Then BtnPreset15.BackColor = Color.Green
-            If (presetstate(ad) And &H8000) <> 0 Then BtnPreset16.BackColor = Color.Green
         End If
 
         If PreloadPreset > 0 And PreloadPreset < 99 And PresetLive = False Then
@@ -987,58 +921,13 @@ Public Class MainForm
             If PreloadPreset = 2 Then BtnPreset2.BackColor = Color.Orange
             If PreloadPreset = 3 Then BtnPreset3.BackColor = Color.Orange
             If PreloadPreset = 4 Then BtnPreset4.BackColor = Color.Orange
-            If PreloadPreset = 5 Then BtnPreset5.BackColor = Color.Orange
-            If PreloadPreset = 6 Then BtnPreset6.BackColor = Color.Orange
-            If PreloadPreset = 7 Then BtnPreset7.BackColor = Color.Orange
-            If PreloadPreset = 8 Then BtnPreset8.BackColor = Color.Orange
-            If PreloadPreset = 9 Then BtnPreset9.BackColor = Color.Orange
-            If PreloadPreset = 10 Then BtnPreset10.BackColor = Color.Orange
-            If PreloadPreset = 11 Then BtnPreset11.BackColor = Color.Orange
-            If PreloadPreset = 12 Then BtnPreset12.BackColor = Color.Orange
-            If PreloadPreset = 13 Then BtnPreset13.BackColor = Color.Orange
-            If PreloadPreset = 14 Then BtnPreset14.BackColor = Color.Orange
-            If PreloadPreset = 15 Then BtnPreset15.BackColor = Color.Orange
-            If PreloadPreset = 16 Then BtnPreset16.BackColor = Color.Orange
         End If
 
 
-        If AutoSongMode = True Or AutoSpeechMode = True Then
-            If PresetAuto(16 * (ad - 1) + 0) Then BtnPreset1.AccessibleDescription = "A" Else BtnPreset1.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 1) Then BtnPreset2.AccessibleDescription = "A" Else BtnPreset2.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 2) Then BtnPreset3.AccessibleDescription = "A" Else BtnPreset3.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 3) Then BtnPreset4.AccessibleDescription = "A" Else BtnPreset4.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 4) Then BtnPreset5.AccessibleDescription = "A" Else BtnPreset5.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 5) Then BtnPreset6.AccessibleDescription = "A" Else BtnPreset6.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 6) Then BtnPreset7.AccessibleDescription = "A" Else BtnPreset7.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 7) Then BtnPreset8.AccessibleDescription = "A" Else BtnPreset8.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 8) Then BtnPreset9.AccessibleDescription = "A" Else BtnPreset9.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 9) Then BtnPreset10.AccessibleDescription = "A" Else BtnPreset10.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 10) Then BtnPreset11.AccessibleDescription = "A" Else BtnPreset11.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 11) Then BtnPreset12.AccessibleDescription = "A" Else BtnPreset12.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 12) Then BtnPreset13.AccessibleDescription = "A" Else BtnPreset13.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 13) Then BtnPreset14.AccessibleDescription = "A" Else BtnPreset14.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 14) Then BtnPreset15.AccessibleDescription = "A" Else BtnPreset15.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 15) Then BtnPreset16.AccessibleDescription = "A" Else BtnPreset16.AccessibleDescription = ""
-        Else
-            BtnPreset1.AccessibleDescription = ""
-            BtnPreset2.AccessibleDescription = ""
-            BtnPreset3.AccessibleDescription = ""
-            BtnPreset4.AccessibleDescription = ""
-            BtnPreset5.AccessibleDescription = ""
-            BtnPreset6.AccessibleDescription = ""
-            BtnPreset7.AccessibleDescription = ""
-            BtnPreset8.AccessibleDescription = ""
-            BtnPreset9.AccessibleDescription = ""
-            BtnPreset10.AccessibleDescription = ""
-            BtnPreset11.AccessibleDescription = ""
-            BtnPreset12.AccessibleDescription = ""
-            BtnPreset13.AccessibleDescription = ""
-            BtnPreset14.AccessibleDescription = ""
-            BtnPreset15.AccessibleDescription = ""
-            BtnPreset16.AccessibleDescription = ""
-        End If
-
-
+        BtnPreset1.AccessibleDescription = ""
+        BtnPreset2.AccessibleDescription = ""
+        BtnPreset3.AccessibleDescription = ""
+        BtnPreset4.AccessibleDescription = ""
 
     End Sub
 
@@ -1275,18 +1164,6 @@ Public Class MainForm
             If ts = 2 Then BtnPreset_Click(BtnPreset2, Nothing)
             If ts = 3 Then BtnPreset_Click(BtnPreset3, Nothing)
             If ts = 4 Then BtnPreset_Click(BtnPreset4, Nothing)
-            If ts = 5 Then BtnPreset_Click(BtnPreset5, Nothing)
-            If ts = 6 Then BtnPreset_Click(BtnPreset6, Nothing)
-            If ts = 7 Then BtnPreset_Click(BtnPreset7, Nothing)
-            If ts = 8 Then BtnPreset_Click(BtnPreset8, Nothing)
-            If ts = 9 Then BtnPreset_Click(BtnPreset9, Nothing)
-            If ts = 10 Then BtnPreset_Click(BtnPreset10, Nothing)
-            If ts = 11 Then BtnPreset_Click(BtnPreset11, Nothing)
-            If ts = 12 Then BtnPreset_Click(BtnPreset12, Nothing)
-            If ts = 13 Then BtnPreset_Click(BtnPreset13, Nothing)
-            If ts = 14 Then BtnPreset_Click(BtnPreset14, Nothing)
-            If ts = 15 Then BtnPreset_Click(BtnPreset15, Nothing)
-            If ts = 16 Then BtnPreset_Click(BtnPreset16, Nothing)
             BtnPreload.BackColor = Color.White
             Exit Sub
         End If
@@ -1544,22 +1421,14 @@ Public Class MainForm
     Private Sub Button6_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If BtnFast.BackColor = Color.Green Then
-            mLog.Text = SendCamCmdAddr(ad, "Z05") 'zoom med wide
-        Else
-            mLog.Text = SendCamCmdAddr(ad, "Z45") 'zoom med wide
-        End If
+        mLog.Text = SendCamCmdAddr(ad, "Z05") 'zoom med wide
     End Sub
 
 
     Private Sub Button2_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button2.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If BtnFast.BackColor = Color.Green Then
-            mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med wide
-        Else
-            mLog.Text = SendCamCmdAddr(ad, "Z55") 'zoom med wide
-        End If
+        mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med wide
     End Sub
 
     Private Sub Button6_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseUp
@@ -1590,7 +1459,7 @@ Public Class MainForm
         If index = "DR" Then xpos = 1 : ypos = 1
         If Globals.CamInvert(ad) Then xpos = -xpos : ypos = -ypos
         xsp = "50" : ysp = "50"
-        If BtnFast.BackColor = Color.Green Then spd = 25 Else spd = 10
+        spd = 25
         If (xpos < 0) Then xsp = Val(xsp) - spd
         If (xpos > 0) Then xsp = Val(xsp) + spd
         If (ypos < 0) Then ysp = Val(ysp) + spd
@@ -1654,18 +1523,6 @@ Public Class MainForm
         If c = 2 Then BtnPreset_Click(BtnPreset2, Nothing)
         If c = 3 Then BtnPreset_Click(BtnPreset3, Nothing)
         If c = 4 Then BtnPreset_Click(BtnPreset4, Nothing)
-        If c = 5 Then BtnPreset_Click(BtnPreset5, Nothing)
-        If c = 6 Then BtnPreset_Click(BtnPreset6, Nothing)
-        If c = 7 Then BtnPreset_Click(BtnPreset7, Nothing)
-        If c = 8 Then BtnPreset_Click(BtnPreset8, Nothing)
-        If c = 9 Then BtnPreset_Click(BtnPreset9, Nothing)
-        If c = 10 Then BtnPreset_Click(BtnPreset10, Nothing)
-        If c = 11 Then BtnPreset_Click(BtnPreset11, Nothing)
-        If c = 12 Then BtnPreset_Click(BtnPreset12, Nothing)
-        If c = 13 Then BtnPreset_Click(BtnPreset13, Nothing)
-        If c = 14 Then BtnPreset_Click(BtnPreset14, Nothing)
-        If c = 15 Then BtnPreset_Click(BtnPreset15, Nothing)
-        If c = 16 Then BtnPreset_Click(BtnPreset16, Nothing)
     End Sub
 
     Sub NextAutoShot()
@@ -1880,9 +1737,6 @@ Public Class MainForm
     Private Sub BtnOBSIdent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Ident video"",""message-id"":""TEST1""}")
         BtnMPrev.BackColor = Color.White
-        BtnOBSamintro.BackColor = Color.White
-        BtnOBSpmintro.BackColor = Color.White
-        BtnOBSIdent.BackColor = Color.Green
         BtnMNext.BackColor = Color.White
 
         ClipRemainTime = Globals.Cliptime(3)
