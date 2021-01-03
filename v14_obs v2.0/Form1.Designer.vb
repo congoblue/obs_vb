@@ -741,14 +741,14 @@ Partial Class MainForm
         '
         Me.ListBoxMedia.BackColor = System.Drawing.Color.Black
         Me.ListBoxMedia.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ListBoxMedia.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListBoxMedia.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxMedia.ForeColor = System.Drawing.Color.Yellow
         Me.ListBoxMedia.FormattingEnabled = True
-        Me.ListBoxMedia.ItemHeight = 19
+        Me.ListBoxMedia.ItemHeight = 16
         Me.ListBoxMedia.Items.AddRange(New Object() {"..."})
         Me.ListBoxMedia.Location = New System.Drawing.Point(689, 413)
         Me.ListBoxMedia.Name = "ListBoxMedia"
-        Me.ListBoxMedia.Size = New System.Drawing.Size(163, 97)
+        Me.ListBoxMedia.Size = New System.Drawing.Size(163, 82)
         Me.ListBoxMedia.TabIndex = 314
         '
         'Button9
@@ -787,11 +787,11 @@ Partial Class MainForm
         '
         'BtnMNext
         '
-        Me.BtnMNext.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnMNext.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMNext.Image = CType(resources.GetObject("BtnMNext.Image"), System.Drawing.Image)
         Me.BtnMNext.Location = New System.Drawing.Point(628, 469)
         Me.BtnMNext.Name = "BtnMNext"
-        Me.BtnMNext.Size = New System.Drawing.Size(50, 50)
+        Me.BtnMNext.Size = New System.Drawing.Size(40, 40)
         Me.BtnMNext.TabIndex = 307
         Me.BtnMNext.Text = "Next"
         Me.BtnMNext.UseVisualStyleBackColor = True
@@ -831,11 +831,11 @@ Partial Class MainForm
         '
         'BtnMPrev
         '
-        Me.BtnMPrev.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnMPrev.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMPrev.Image = CType(resources.GetObject("BtnMPrev.Image"), System.Drawing.Image)
         Me.BtnMPrev.Location = New System.Drawing.Point(628, 413)
         Me.BtnMPrev.Name = "BtnMPrev"
-        Me.BtnMPrev.Size = New System.Drawing.Size(50, 50)
+        Me.BtnMPrev.Size = New System.Drawing.Size(40, 40)
         Me.BtnMPrev.TabIndex = 290
         Me.BtnMPrev.Text = "Prev"
         Me.BtnMPrev.UseVisualStyleBackColor = True

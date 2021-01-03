@@ -56,6 +56,7 @@ Public Class MainForm
     Dim CamFocusManual(8) As Integer
     Dim CamZoom(8) As Integer
     Dim CamBatt(8) As Integer
+    Dim CamRunZoom(8) As Integer
     Dim ProgCloseTimer As Integer = 0
     Dim OverlayWasActive As Integer = 0
     Dim CamIgnore(8) As Boolean
@@ -1293,39 +1294,41 @@ Public Class MainForm
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z99") 'max speed zoom tele
+        SendCamCmdAddr(ad, "camera/zoom_level/63")
+        CamZoom(ad) = 63
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z01") 'max speed zoom wide
+        SendCamCmdAddr(ad, "camera/zoom_level/0")
+        CamZoom(ad) = 0
     End Sub
 
 
     Private Sub Button6_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z05") 'zoom med wide
+        CamRunZoom(ad) = -1 'zoom out
     End Sub
 
 
     Private Sub Button2_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button2.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med wide
+        CamRunZoom(ad) = 1 'zoom in
     End Sub
 
     Private Sub Button6_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
+        CamRunZoom(ad) = 0 'zoom stop
     End Sub
 
     Private Sub Button2_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button2.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
+        CamRunZoom(ad) = 0 'zoom stop
     End Sub
 
     Private Sub MyButtonCamUL_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamUL.MouseDown, MyButtonCamU.MouseDown, MyButtonCamUR.MouseDown, MyButtonCamL.MouseDown, MyButtonCamR.MouseDown, MyButtonCamDL.MouseDown, MyButtonCamD.MouseDown, MyButtonCamDR.MouseDown
@@ -1410,170 +1413,6 @@ Public Class MainForm
         If c = 4 Then BtnPreset_Click(BtnPreset4, Nothing)
     End Sub
 
-    Sub NextAutoShot()
-        Dim c As Integer, i As Integer
-        Dim f As Boolean
-        Dim ShotSize As Integer
-        Dim Newcontent As Integer
-        If AutoSongMode = True Or SingleAutoShot = 1 Then
-            'pick next cam at random
-            Do
-                c = CInt(Rnd() * 4 + 1)
-            Loop While c = liveaddr Or (SingleAutoShot = 1 And c = addr) Or c > 4
-            If c = 1 Then BtnCam1_Click(BtnCam1, Nothing)
-            If c = 2 Then BtnCam1_Click(BtnCam2, Nothing)
-            If c = 3 Then BtnCam1_Click(BtnCam3, Nothing)
-            If c = 4 Then BtnCam1_Click(BtnCam4, Nothing)
-            'find shots for next cam that aren't "stage"
-            'PresetContent: 1=stage 2=band (not singers) 3=congregation 4=all 5=singers
-            f = False
-            'current shot content is in prevautosongshot
-            'Debug.Print(PrevAutoSongShot)
-            For c = 1 To 16 'check that there is at least one suitable preset
-                If PresetAuto((c - 1) + ((addr - 1) * 16)) = True Then 'if shot is enabled for auto
-                    Newcontent = PresetContent((c - 1) + ((addr - 1) * 16))
-                    If SingleAutoShot = 1 Then
-                        If Newcontent <> 1 Then f = True
-                    Else
-                        If PrevAutoSongShot = 5 Then 'if previous shot singers, we want not singers
-                            If Newcontent = 2 Or Newcontent = 3 Or Newcontent = 4 Then f = True
-                        Else 'else go for singers
-                            If Newcontent = 4 Or Newcontent = 5 Then f = True
-                        End If
-                    End If
-                End If
-            Next
-            If f = True Then 'only change the shot if there is something suitable
-                f = False
-                Do
-                    c = CInt(Rnd() * 16 + 1)
-                    If (c < 17) Then
-                        If PresetAuto((c - 1) + ((addr - 1) * 16)) = True Then
-                            Newcontent = PresetContent((c - 1) + ((addr - 1) * 16))
-                            If SingleAutoShot = 1 Then 'in magic shot mode pick any shot except stage
-                                If Newcontent <> 1 Then f = True
-                            Else
-                                If PrevAutoSongShot = 5 Then 'if previous shot singers, we want not singers
-                                    If Newcontent = 2 Or Newcontent = 3 Or Newcontent = 4 Then f = True
-                                Else
-                                    If Newcontent = 4 Or Newcontent = 5 Then f = True
-                                End If
-                            End If
-                        End If
-                    End If
-                Loop While f = False
-                AutoPreset = 1
-                PrevAutoSongShot = Newcontent 'remember the content of this shot so we don't do 2 the same
-                PresetClick(c)
-                'if new shot is closeup, 25% chance fixed zoom out, 50% chance move to wide shot
-                'PresetSize: 1=very close 2=close 3=mid 4=full 5=wide 6=full wide
-                ShotSize = PresetSize((c - 1) + ((addr - 1) * 16))
-                If ShotSize <= 5 Then
-                    If (Rnd() < 0.3) Then ' Or ShotSize = 1 Then
-                        BtnSlowOut_Click(BtnSlowOut, Nothing)
-                        AutoSongPreload = True
-                    Else
-                        If (Rnd() > 0.5) Then
-                            f = False
-                            For i = 1 To 16 'first check that there is another suitable preset to go to
-                                If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) > 4 And i <> c Then f = True
-                            Next
-                            If f = True Then 'there is at least one, pick at random
-                                BtnPreload_Click(BtnPreload, Nothing)
-                                AutoSongPreload = True
-                                f = False
-                                Do
-                                    i = CInt(Rnd() * 16 + 1)
-                                    If (i < 17) Then
-                                        If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) > 4 And i <> c Then f = True
-                                    End If
-                                Loop While f = False
-                                AutoPreset = 1
-                                PresetClick(i)
-                            End If
-                        End If
-                    End If
-
-                End If
-
-                'if shot is wide, 50% chance zoom in to close shot
-                If ShotSize >= 5 Then
-                    If (Rnd() < 0.5) Then
-                        f = False
-                        For i = 1 To 16 'first check that there is another suitable preset to go to
-                            If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 4 And i <> c Then f = True
-                        Next
-                        If f = True Then 'there is at least one, pick at random
-                            BtnPreload_Click(BtnPreload, Nothing)
-                            AutoSongPreload = True
-                            f = False
-                            Do
-                                i = CInt(Rnd() * 16 + 1)
-                                If (i < 17) Then
-                                    If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 4 And i <> c Then f = True
-                                End If
-                            Loop While f = False
-                            AutoPreset = 1
-                            PresetClick(i)
-                        End If
-                    End If
-
-                End If
-            End If
-        End If
-
-        If AutoSpeechMode = True Then
-            'if livecam is 1 pick next cam at random and pick wide stage cong or all
-            'else cam 1, stage close or mid
-            If liveaddr = 1 Then
-                'pick next cam at random - go to a wide shot
-                Do
-                    c = CInt(Rnd() * 4 + 1)
-                Loop While c = liveaddr Or c > 4
-                If c = 1 Then BtnCam1_Click(BtnCam1, Nothing)
-                If c = 2 Then BtnCam1_Click(BtnCam2, Nothing)
-                If c = 3 Then BtnCam1_Click(BtnCam3, Nothing)
-                If c = 4 Then BtnCam1_Click(BtnCam4, Nothing)
-
-                f = False
-                For i = 1 To 16 'first check that there is another suitable preset to go to
-                    If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 2 And PresetSize((i - 1) + ((addr - 1) * 16)) >= 4 Then f = True
-                Next
-                If f = True Then 'there is at least one, pick at random
-                    f = False
-                    Do
-                        i = CInt(Rnd() * 16 + 1)
-                        If (i < 17) Then
-                            If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 2 And PresetSize((i - 1) + ((addr - 1) * 16)) >= 4 Then f = True
-                        End If
-                    Loop While f = False
-                    PresetClick(i)
-                End If
-
-
-            Else
-                'return to the stage shot and pick a slightly closer or wider shot
-                If (PrevAutoSpeech = False) Then 'pick close stage shot if we don't already have one
-                    PrevAutoSpeech = True
-                    For i = 1 To 16 'first check that there is another suitable preset to go to
-                        If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) = 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 3 Then f = True
-                    Next
-                    If f = True Then 'there is at least one, pick at random
-                        f = False
-                        Do
-                            i = CInt(Rnd() * 16 + 1)
-                            If (i < 17) Then
-                                If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) = 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 3 Then f = True
-                            End If
-                        Loop While f = False
-                        PresetClick(i)
-                    End If
-                End If
-            End If
-
-
-        End If
-    End Sub
 
     Private Sub BtnLiveSlow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLiveSlow.Click
         BtnLiveSlow.BackColor = Color.Green
@@ -2073,13 +1912,25 @@ Public Class MainForm
             End If
         End If
 
-        'timer to load next shot if in auto mode
-        If AutoWait > 0 Then
-            AutoWait = AutoWait - 1
-            If (AutoWait = 0) And (AutoSongMode = True Or AutoSpeechMode = True) Then
-                NextAutoShot()
+        'zoom in or out with time
+        For i = 1 To 4
+            If CamRunZoom(i) <> 0 Then
+                If CamRunZoom(i) = 1 Then
+                    If CamZoom(i) < 63 Then
+                        CamZoom(i) = CamZoom(i) + 1
+                    Else
+                        CamRunZoom(i) = 0
+                    End If
+                Else
+                    If CamZoom(i) > 0 Then
+                        CamZoom(i) = CamZoom(i) - 1
+                    Else
+                        CamRunZoom(i) = 0
+                    End If
+                End If
+                SendCamCmdAddr(addr, "camera/zoom_level/" & CamZoom(i))
             End If
-        End If
+        Next
 
         'process keyhit from cam controller
         If (KeyHit) Then
@@ -2129,9 +1980,17 @@ Public Class MainForm
         Else
             SendCamCmdAddr(addr, "camera/autofocus_mode/1")
         End If
-
+        ReadbackCameraStates(addr)
     End Sub
 
+    Private Sub BtnAELock_Click(sender As Object, e As EventArgs) Handles BtnAELock.Click
+        If CamAgc(addr) = 0 Then
+            SendCamCmdAddr(addr, "camera/exposure_lock/1")
+        Else
+            SendCamCmdAddr(addr, "camera/exposure_lock/0")
+        End If
+        ReadbackCameraStates(addr)
+    End Sub
 
     Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
         'ticks every 1 sec
