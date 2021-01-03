@@ -4,7 +4,6 @@ Imports System.Text
 Imports System.IO.Ports
 Imports System.Threading
 Imports System.ComponentModel
-Imports System.Web.Script.Serialization
 Imports WebSocket4Net
 
 Public Class MainForm
@@ -55,6 +54,8 @@ Public Class MainForm
     Dim CamWBRed(8) As Integer
     Dim CamWBBlue(8) As Integer
     Dim CamFocusManual(8) As Integer
+    Dim CamZoom(8) As Integer
+    Dim CamBatt(8) As Integer
     Dim ProgCloseTimer As Integer = 0
     Dim OverlayWasActive As Integer = 0
     Dim CamIgnore(8) As Boolean
@@ -89,8 +90,6 @@ Public Class MainForm
     Dim TieAux3 As Boolean = True
     Dim CurrentAux3 As Integer
     Dim PrevAux3 As Integer = 0
-    Dim CamRec(4) As Boolean
-    Dim CamRecStatusTimer As Integer = 0
     Dim CamCmdPending As Boolean = False
     Dim PipAddr As Integer = 0 'the input showing pip
     Dim MediaItem As Integer
@@ -163,6 +162,16 @@ Public Class MainForm
         If oaddr = 4 Then ObsSourceName = "Cam4"
     End Function
 
+    Function DroidCamValue(infostring As String, tagname As String) As Integer
+        If InStr(infostring, """" & tagname & """:") <> 0 Then
+            Dim istr = Mid(infostring, InStr(infostring, """" & tagname & """:"))
+            istr = Mid(istr, InStr(istr, ":") + 1)
+            Return Val(istr)
+        Else
+            Return -1
+        End If
+    End Function
+
     Private Sub OpenWebSocket()
         websocket = New WebSocket4Net.WebSocket("ws://localhost:4444/")
         'AddHandler websocket.Opened, Sub(s, e) socketOpened(s, e)
@@ -201,113 +210,32 @@ Public Class MainForm
     End Sub
 
     Private Function SendCamCmd(ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
-        Dim url As String, result As String
-        If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
-        'If CamCmdPending = True Then Return ""
-        If CamIgnore(addr) = True Then Return ""
-        url = "http://" & Globals.CamIP(addr) & "/cgi-bin/aw_ptz?cmd=%23" & cmd & "&res=1"
-        result = ""
-        Try
-            'CamCmdPending = True
-            result = webClient.DownloadString(url)
-        Catch ex As System.Net.WebException
-            CamIgnore(addr) = True
-            If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
-        End Try
-        'CamCmdPending = False
-        Return result
-    End Function
-
-    Private Function SendCamCmdNoHash(ByVal cmd As String, ByVal typ As String)
-        Dim webClient As New System.Net.WebClient
-        Dim url As String, result As String
-        If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
-        'If CamCmdPending = True Then Return ""
-        If CamIgnore(addr) = True Then Return ""
-        If (typ = "") Then typ = "aw_ptz" 'aw_ptz for position, aw_cam for cam settings
-        url = "http://" & Globals.CamIP(addr) & "/cgi-bin/" & typ & "?cmd=" & cmd & "&res=1"
-        result = ""
-        Try
-            'CamCmdPending = True
-            result = webClient.DownloadString(url)
-        Catch ex As System.Net.WebException
-            CamIgnore(addr) = True
-            If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
-        End Try
-        'CamCmdPending = False
-        Return result
     End Function
 
     Private Function SendCamCmdAddr(ByVal caddr As Integer, ByVal cmd As String)
         Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
-        'If CamCmdPending = True Then Return ""
+        If caddr = 0 Or caddr > 4 Then Return ""
         If CamIgnore(caddr) = True Then Return ""
-        url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/aw_ptz?cmd=%23" & cmd & "&res=1"
-        result = ""
-        Try
-            'CamCmdPending = True
-            result = webClient.DownloadString(url)
-        Catch ex As System.Net.WebException
-            CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
-        End Try
-        'CamCmdPending = False
-        Return result
-    End Function
-    Private Function SendCamCmdAddrNoHash(ByVal caddr As Integer, ByVal cmd As String, ByVal typ As String)
-        Dim webClient As New System.Net.WebClient
-        Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
-        'If CamCmdPending = True Then Return ""
-        If CamIgnore(caddr) = True Then Return ""
-        'cmd = Replace(cmd, ":", "%3A")
-        If (typ = "") Then typ = "aw_ptz" 'aw_ptz for position, aw_cam for cam settings
-        url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & typ & "?cmd=" & cmd & "&res=1"
-        result = ""
-        Try
-            'CamCmdPending = True
-            result = webClient.DownloadString(url)
-        Catch ex As System.Net.WebException
-            CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
-        End Try
-        'CamCmdPending = False
-        Return result
-    End Function
+        url = "http://" & Globals.CamIP(caddr) & ":4747/v1/" & cmd
 
-    Function SendCamQuery(ByVal caddr As Integer, ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
-        Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
-        'If CamCmdPending = True Then Return ""
-        If CamIgnore(caddr) = True Then Return ""
-        url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & cmd
+        Dim request As HttpWebRequest = HttpWebRequest.Create(url)
+        request.Method = "GET"
+        request.Timeout = 1000
+        request.ReadWriteTimeout = 1000
         result = ""
         Try
-            'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            Dim wresp As HttpWebResponse = request.GetResponse()
+            Dim wrespreader As New System.IO.StreamReader(wresp.GetResponseStream())
+            result = wrespreader.ReadToEnd
+
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
             MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
     End Function
-
-    Public Sub SendCamQueryNoResponse(ByVal caddr As Integer, ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
-        Dim url As String
-        url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & cmd
-        webClient.DownloadString(url)
-    End Sub
 
 
     Private Sub MainForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -400,13 +328,7 @@ Public Class MainForm
             ctrlkey = False
         End If
 
-        If Screen.AllScreens.Count > 1 Then
-            Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
-            'Windows.Forms.Cursor.Hide()
-            Me.Cursor = Cursors.Cross
-        Else
-            Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
-        End If
+        Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
 
         OpenWebSocket()
 
@@ -466,21 +388,17 @@ Public Class MainForm
     '----------------------Read camera states back from cameras-----------------------------------------------------
     Sub ReadbackCameraStates(ByVal ta As Integer)
         Dim op As String
-        SendCamCmdAddrNoHash(ta, "XSF:1", "aw_cam") 'set scene file "MANUAL 1"
-        op = SendCamCmdAddrNoHash(ta, "QSD:B1", "aw_cam") 'get WB setting
-        CamWBBlue(ta) = Val("&H" & Mid(op, 8))
-        op = SendCamCmdAddrNoHash(ta, "QGU", "aw_cam") 'get AGC setting
-        CamAgc(ta) = Val("&H" & Mid(op, 5))
-        op = SendCamCmdAddrNoHash(ta, "QSD:69", "aw_cam") 'get AGC gain limit setting
-        CamGain(ta) = Val("&H" & Mid(op, 8))
-        op = SendCamCmdAddrNoHash(ta, "QSD:48", "aw_cam") 'get "contrast" setting
-        CamShutter(ta) = (Val(Mid(op, 8)) - 32) * 20 / 64
-        op = SendCamCmdAddrNoHash(ta, "QRV", "aw_cam") 'get iris setting
-        CamIris(ta) = Val("&H" & Mid(op, 5))
-        op = SendCamCmdAddrNoHash(ta, "QRS", "aw_cam") 'get iris auto/man
-        If Val("&H" & Mid(op, 5)) = 1 Then CamIris(ta) = 9999 'flag auto mode
-        op = SendCamCmdAddr(ta, "D1") 'get focus auto/man
-        If Val("&H" & Mid(op, 3)) = 1 Then CamFocusManual(ta) = 0 Else CamFocusManual(ta) = 1 'flag auto mode if return=1
+        op = SendCamCmdAddr(ta, "camera/info") 'get state
+        If InStr(op, """active"":") <> 0 Then
+            CamFocusManual(ta) = DroidCamValue(op, "focusMode")
+            CamAgc(ta) = DroidCamValue(op, "exposure_lock")
+            CamGain(ta) = DroidCamValue(op, "currExposure")
+            CamWBBlue(ta) = DroidCamValue(op, "wbMode")
+            CamZoom(ta) = DroidCamValue(op, "currZoom")
+        End If
+        op = SendCamCmdAddr(ta, "phone/battery_level") 'get state
+        If Len(op) > 0 Then CamBatt(ta) = Val(op)
+        'If Val("&H" & Mid(op, 3)) = 1 Then CamFocusManual(ta) = 0 Else CamFocusManual(ta) = 1 'flag auto mode if return=1
     End Sub
 
     '----------------------Read presets back from file-----------------------------------------------------
@@ -583,36 +501,7 @@ Public Class MainForm
     End Sub
 
     Public Sub ComportOpen()
-        'open com port for camera comms
-        'If _serialPort.IsOpen Then _serialPort.Close()
-        '_serialPort.PortName = GetSetting("Atemswitcher", "Comm", "1", "COM1")
-        '_serialPort.BaudRate = 9600
-        '_serialPort.Parity = Parity.None
-        '_serialPort.DataBits = 8
-        '_serialPort.StopBits = StopBits.One
-        '_serialPort.Handshake = Handshake.None
-        '_serialPort.DiscardNull = False
 
-        ' Set the read/write timeouts
-        '_serialPort.ReadTimeout = 500
-        '_serialPort.WriteTimeout = 500
-        'camconnect = True
-        'Try
-        ' _serialPort.Open()
-        'Catch
-        'MsgBox("The camera com port " & _serialPort.PortName & " cannot be opened.")
-        'camconnect = False
-        'End Try
-
-        'open com port for controller comms
-        If SerialPort1.IsOpen Then SerialPort1.Close()
-        SerialPort1.BaudRate = 9600
-        SerialPort1.PortName = GetSetting("Atemswitcher", "Comm", "2", "COM2")
-        Try
-            SerialPort1.Open()
-        Catch
-            MsgBox("The controller com port " & SerialPort1.PortName & " cannot be opened.")
-        End Try
     End Sub
     Sub EditPresetDetails(ByVal index As Integer)
         PresetCaption((addr - 1) * 16 + index - 1) = InputBox("Preset caption", , PresetCaption((addr - 1) * 16 + index - 1))
@@ -825,7 +714,6 @@ Public Class MainForm
         BtnInp2.BackColor = Color.White
         BtnInp3.BackColor = Color.White
         BtnInp4.BackColor = Color.White
-        BtnInp5.BackColor = Color.White
         If addr = liveaddr Then
             If addr = 1 Then BtnCam1.BackColor = Color.Yellow
             If addr = 2 Then BtnCam2.BackColor = Color.Yellow
@@ -835,7 +723,6 @@ Public Class MainForm
             If addr = 6 Then BtnInp2.BackColor = Color.Yellow
             If addr = 7 Then BtnInp3.BackColor = Color.Yellow
             If addr = 8 Then BtnInp4.BackColor = Color.Yellow
-            If addr = 9 Then BtnInp5.BackColor = Color.Yellow
         Else
             If addr = 1 Then BtnCam1.BackColor = Color.Green
             If addr = 2 Then BtnCam2.BackColor = Color.Green
@@ -845,7 +732,6 @@ Public Class MainForm
             If addr = 6 Then BtnInp2.BackColor = Color.Green
             If addr = 7 Then BtnInp3.BackColor = Color.Green
             If addr = 8 Then BtnInp4.BackColor = Color.Green
-            If addr = 9 Then BtnInp5.BackColor = Color.Green
             If liveaddr = 1 Then BtnCam1.BackColor = Color.Red
             If liveaddr = 2 Then BtnCam2.BackColor = Color.Red
             If liveaddr = 3 Then BtnCam3.BackColor = Color.Red
@@ -854,7 +740,6 @@ Public Class MainForm
             If liveaddr = 6 Then BtnInp2.BackColor = Color.Red
             If liveaddr = 7 Then BtnInp3.BackColor = Color.Red
             If liveaddr = 8 Then BtnInp4.BackColor = Color.Red
-            If liveaddr = 9 Then BtnInp5.BackColor = Color.Red
         End If
         'tally
         If Globals.TallyMode Then
@@ -1119,7 +1004,7 @@ Public Class MainForm
 
 
 
-    Private Sub BtnInp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnInp1.Click, BtnInp2.Click, BtnInp3.Click, BtnInp4.Click, BtnInp5.Click
+    Private Sub BtnInp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnInp1.Click, BtnInp2.Click, BtnInp3.Click, BtnInp4.Click
         If sender.name = "BtnInp1" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,1 )") ' BLACK
             websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
@@ -1728,12 +1613,6 @@ Public Class MainForm
         End If
     End Sub
 
-
-    Function CamRecStatus(ByVal inp As String, ByVal cam As Integer)
-    End Function
-
-
-
     Private Sub BtnOBSIdent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Ident video"",""message-id"":""TEST1""}")
         BtnMPrev.BackColor = Color.White
@@ -1894,190 +1773,7 @@ Public Class MainForm
         'MsgBox(e.Message)
     End Sub
 
-    '#########################################################################################################################################################################
-    ' SERIAL PORT (PTZ controller)
-    '#########################################################################################################################################################################
 
-    Private Sub SerialPort1_DataReceived(ByVal sender As Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        Dim x As Byte, k As Byte
-        Dim ad As Integer
-        Dim op As String
-        CheckForIllegalCrossThreadCalls = False
-        If SerialPort1.IsOpen = False Then Exit Sub
-        While SerialPort1.BytesToRead > 0
-            x = SerialPort1.ReadByte
-            If (x = 255) Then
-                serialcount = serialcount + 1
-                'If serialcount >= 6 Then 'serial data thinning so we don't overwhelm the cameras
-                If 1 Then
-                    serialcount = 0
-                    SerialInBufPtr = 0
-                    JoyX = SerialInBuf(1)
-                    JoyY = SerialInBuf(2)
-                    JoyZ = SerialInBuf(3)
-                    Key(0) = SerialInBuf(4)
-                    Key(1) = SerialInBuf(5)
-                    Key(2) = SerialInBuf(6)
-                    REncode = SerialInBuf(7)
-                    'diagnostic
-                    'TextBox10.Text = SerialInBuf(1) & vbCrLf & SerialInBuf(2) & vbCrLf & SerialInBuf(3)
-                    'TextBox11.Text = SerialInBuf(4) & vbCrLf & SerialInBuf(5) & vbCrLf & SerialInBuf(6) & vbCrLf & SerialInBuf(7)
-                    'check for keypress
-                    If PrevKey(0) <> Key(0) Or PrevKey(1) <> Key(1) Or PrevKey(2) <> Key(2) Then
-                        If Key(0) > PrevKey(0) Then
-                            KeyHit = True
-                            x = Key(0) Xor PrevKey(0)
-                            For k = 0 To 7
-                                If (x And (2 ^ k)) <> 0 Then LastKey = k
-                            Next k
-                        End If
-                        PrevKey(0) = Key(0)
-                        If Key(1) > PrevKey(1) Then
-                            KeyHit = True
-                            x = Key(1) Xor PrevKey(1)
-                            For k = 0 To 7
-                                If (x And (2 ^ k)) <> 0 Then LastKey = k + 8
-                            Next k
-                        End If
-                        PrevKey(1) = Key(1)
-                        If Key(2) > PrevKey(2) Then
-                            KeyHit = True
-                            x = Key(2) Xor PrevKey(2)
-                            For k = 0 To 7
-                                If (x And (2 ^ k)) <> 0 Then LastKey = k + 16
-                            Next k
-                        End If
-                        PrevKey(2) = Key(2)
-                    End If
-                    'check for encoder change
-                    If REncode <> PrevEncode Then EncChange = True
-
-                    'if 1-4 keypress then override cam operation
-                    If (KeyHit) Then
-                        mLog.Text = LastKey
-                        KeyHit = False
-                        If (LastKey = 11) Then
-                            If (CamOverride <> 1) Then
-                                'SerialPort1.Write(Chr(&HFF) & Chr(&H1) & Chr(&H0) & Chr(&H0) & Chr(&H0) & Chr(&H0) & Chr(&H0))
-                                'SerialPort1.Write(Chr(&HFF) & Chr(&HFF) & Chr(&HFF))
-                                CamOverride = 1
-                                OverrideBtn.BackColor = Color.Orange
-                            Else
-                                CamOverride = 0
-                                'SerialPort1.Write(Chr(&HFF) & Chr(&HAA) & Chr(&HAA))
-                                'SerialPort1.Write(Chr(&HFF) & Chr(&H0) & Chr(&H0) & Chr(&H0) & Chr(&H0))
-                                OverrideBtn.BackColor = Color.White
-                            End If
-                        End If
-                        If (LastKey = 12) Then
-                            If (CamOverride <> 2) Then
-                                'SerialPort1.Write(&HFF & &H2 & &H0 & &H0)
-                                'SerialPort1.Write(&HFF & &HAA & &HAA)
-                                CamOverride = 2
-                                OverrideBtn.BackColor = Color.Orange
-                            Else
-                                CamOverride = 0
-                                OverrideBtn.BackColor = Color.White
-                            End If
-                        End If
-                        If (LastKey = 13) Then
-                            If (CamOverride <> 3) Then
-                                'SerialPort1.Write(&HFF & &H4 & &H0)
-                                CamOverride = 3
-                                OverrideBtn.BackColor = Color.Orange
-                            Else
-                                CamOverride = 0
-                                OverrideBtn.BackColor = Color.White
-                            End If
-                        End If
-                        If (LastKey = 14) Then
-                            If (CamOverride <> 4) Then
-                                'SerialPort1.Write(&HFF & &H8 & &H0)
-                                CamOverride = 4
-                                OverrideBtn.BackColor = Color.Orange
-                            Else
-                                CamOverride = 0
-                                OverrideBtn.BackColor = Color.White
-                            End If
-                        End If
-                        If (LastKey = 15) Then
-                            CamOverride = 0
-                            OverrideBtn.BackColor = Color.White
-                        End If
-                    End If
-
-                    'check for joystick being operated
-                    'we will define a dead band at the centre of the joystick
-                    Dim JoyDB As Byte = 8 'deadband of joystick
-                    'If JoyX < (128 - JoyDB) Or JoyX > (128 + JoyDB) Or JoyY < (128 - JoyDB) Or JoyY > (128 + JoyDB) Or JoyZ < (128 - JoyDB) Or JoyZ > (128 + JoyDB) Then
-
-                    Dim xpos As Integer, ypos As Integer, zpos As Integer, zoom As Boolean = False
-                    If PTZLive = False Then ad = addr Else ad = liveaddr
-                    If (CamOverride > 0) Then ad = CamOverride 'override the selected camera from the buttons
-                    If (ad < 5) Or ad = 7 Then
-                        xpos = JoyX
-                        ypos = JoyY
-                        zpos = 255 - JoyZ
-                        'If (xpos > 128 - JoyDB) And (xpos < 128 + JoyDB) Then
-                        'xpos = 128
-                        'Else
-                        'If (xpos < 128 - JoyDB) Then
-                        'xpos = xpos + JoyDB
-                        'Else
-                        'xpos = xpos - JoyDB
-                        'End If
-                        'End If
-                        'If (ypos > 128 - JoyDB) And (ypos < 128 + JoyDB) Then
-                        'ypos = 128
-                        'Else
-                        'If (ypos < 128 - JoyDB) Then
-                        '    ypos = ypos + JoyDB
-                        'Else
-                        'ypos = ypos - JoyDB
-                        'End If
-                        'End If
-                        'If (zpos > 128 - JoyDB) And (zpos < 128 + JoyDB) Then
-                        'zpos = 128
-                        'Else
-                        'If (zpos < 128 - JoyDB) Then
-                        'zpos = zpos + JoyDB
-                        'Else
-                        'zpos = zpos - JoyDB
-                        'End If
-                        'End If
-                        If Globals.CamInvert(ad) Then xpos = 255 - xpos : ypos = 255 - ypos
-                        'JoyZ = zpos - JoyDB : JoyX = xpos - JoyDB : JoyY = ypos - JoyDB
-                        'JoyZ = 1 + Int(JoyZ * 99 / (255 - JoyDB * 2))
-                        If (zpos >= 128) Then JoyZ = 100 - zoomconvert(255 - zpos) Else JoyZ = zoomconvert(zpos)
-                        If (JoyZ <> PrevJoyZ) Then
-                            If (alreadysending = False) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
-                                op = Format(JoyZ, "00")
-                                alreadysending = True
-                                SendCamCmdAddr(ad, "Z" & op)
-                                PrevJoyZ = JoyZ 'only store the prev value if we actually send the new value
-                                alreadysending = False
-                            End If
-                        End If
-                        'JoyX = 1 + Int(JoyX * 99 / (255 - JoyDB * 2)) : JoyY = 1 + Int(JoyY * 99 / (255 - JoyDB * 2))
-                        If (xpos >= 128) Then JoyX = 100 - joyconvert(255 - xpos) Else JoyX = joyconvert(xpos)
-                        If (ypos >= 128) Then JoyY = 100 - joyconvert(255 - ypos) Else JoyY = joyconvert(ypos)
-                        If (JoyX <> PrevJoyX) Or (JoyY <> PrevJoyY) Then
-                            If alreadysending = False Then
-                                op = Format(JoyX, "00") & Format(JoyY, "00")
-                                alreadysending = True
-                                SendCamCmdAddr(ad, "PTS" & op)
-                                PrevJoyX = JoyX : PrevJoyY = JoyY
-                                alreadysending = False
-                            End If
-                        End If
-                        'mLog.Text = JoyX & ":" & JoyY & ":" & JoyZ
-                    End If
-                End If
-            End If
-            SerialInBuf(SerialInBufPtr) = x
-            If SerialInBufPtr < 16 Then SerialInBufPtr = SerialInBufPtr + 1
-        End While
-    End Sub
 
 
 
@@ -2091,12 +1787,8 @@ Public Class MainForm
         Dim op As String
         Dim px As Integer, py As Integer
 
-        'timer to wait for camera serial bytes
-        If (gotrx > 0) Then gotrx = gotrx - 1
-
         'timer to autoconnect on startup
         If (startuptimer < 70) Then startuptimer = startuptimer + 1
-        If startuptimer = 69 Then GroupBox1.Hide()
         If (startuptimer = 5) Then 'open com ports
             Timer1.Enabled = False
             If GetSetting("Atemswitcher", "Set", "Askprofile", True) = True Then
@@ -2116,18 +1808,7 @@ Public Class MainForm
                     ReadPresetFile()
                 End If
             End If
-            GroupBox1.Show()
-            GroupBox1.Left = 100 : GroupBox1.Top = 100
-            If ctrlkey Then Label22.Text = "EMERGENCY STARTUP MODE" & vbCrLf Else Label22.Text = ""
-            Label22.Text = Label22.Text & "Profile: " & Globals.PresetFileName & vbCrLf
-            Label22.Text = Label22.Text & "Opening com port..."
-            ComportOpen()
-            If (SerialPort1.IsOpen) Then
-                Label22.Text = Label22.Text & "Done" & vbCrLf
-            Else
-                Label22.Text = Label22.Text & "Fail" & vbCrLf
-            End If
-            GroupBox1.Refresh()
+
             'also make sure OBS is in the right profile
             websocket.Send("{""request-type"":""SetCurrentProfile"",""profile-name"":""SJN Youtube live"",""message-id"":""TEST1""}")
             'and open the multiviewer
@@ -2150,39 +1831,18 @@ Public Class MainForm
             '        Timer1.Enabled = True
             ReadMediaSources()
         End If
-        If (startuptimer = 15) Then
-            Timer1.Enabled = False
-            'If atemconnect = False Then CamIgnore(1) = True : CamIgnore(2) = True : CamIgnore(3) = True : CamIgnore(4) = True 'if atem connect fails, don't try to connect cameras
-            For ta = 1 To 4
-                SendCamCmdAddr(ta, "O1") 'power on command
-            Next
-            Timer1.Enabled = True
 
-        End If
-        If (startuptimer = 30) Then 'get/set camera defaults
+        If (startuptimer = 15) Then 'get/set camera defaults
             Timer1.Enabled = False
             For ta = 1 To 4
 
-                Label22.Text = Label22.Text & "Initialise Camera " & ta & "..."
-                GroupBox1.Refresh()
                 ReadbackCameraStates(ta)
-                If (CamIgnore(ta) = False) Then Label22.Text = Label22.Text & "Done" & vbCrLf Else Label22.Text = Label22.Text & "Fail" & vbCrLf
                 If (ctrlkey = False) Then
                     'temporarily don't move the cameras on power up
                     'SendCamCmdAddr(ta, "APC80008000")
                     'SendCamCmdAddr(ta, "AXZ555")
                 End If
             Next
-            Label22.Text = Label22.Text & "Initialise Camera 5..." 'send power on command to he2 and check we get a response
-            GroupBox1.Refresh()
-            If Globals.Cam5Dis = False Then
-                If SendCamQuery(7, "aw_ptz?cmd=%23O1&res=1") <> "" Then CamIgnore(7) = False Else CamIgnore(7) = True
-                If CamIgnore(7) = False Then Label22.Text = Label22.Text & "Done" & vbCrLf Else Label22.Text = Label22.Text & "Fail" & vbCrLf
-            Else
-                Label22.Text = Label22.Text & "Ignore" & vbCrLf
-                CamIgnore(7) = True
-            End If
-            Label22.Text = Label22.Text & "Waiting for cameras to come out of standby..."
             Timer1.Enabled = True
             ShowCamValues()
 
@@ -2456,26 +2116,22 @@ Public Class MainForm
         End If
         If (ShutDownTimer = 2) And GetSetting("Atemswitcher", "Set", "CamStandby", True) = True Then 'put cams into standby
             Timer1.Enabled = False
-            GroupBox1.Show()
-            GroupBox1.Left = 100 : GroupBox1.Top = 100
-            Label22.Text = "Closing down cameras..." & vbCrLf
-            SendCamCmdAddr(1, "O0")
-            SendCamCmdAddr(2, "O0")
-            SendCamCmdAddr(3, "O0")
-            SendCamCmdAddr(4, "O0")
-            SendCamCmdAddr(7, "O0")
-            'SendCamCmdAddr(1, "APC8000FFFF") 'central position lens fully down
-            'SendCamCmdAddr(2, "APC8000FFFF")
-            'SendCamCmdAddr(3, "APC8000FFFF")
-            'SendCamCmdAddr(4, "APC8000FFFF")
-            GroupBox1.Refresh()
             Timer1.Enabled = True
         End If
-        If ShutDownTimer = 30 Then Label22.Text = Label22.Text & "Exit application..." & vbCrLf
         If ShutDownTimer = 50 Then Application.Exit()
 
 
     End Sub
+
+    Private Sub BtnFocus_Click(sender As Object, e As EventArgs) Handles BtnFocus.Click
+        If CamFocusManual(addr) = 0 Then
+            SendCamCmdAddr(addr, "camera/autofocus_mode/2")
+        Else
+            SendCamCmdAddr(addr, "camera/autofocus_mode/1")
+        End If
+
+    End Sub
+
 
     Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
         'ticks every 1 sec
