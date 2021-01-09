@@ -49,6 +49,7 @@ Public Class MainForm
     Dim presetstate(8) As Integer
     Dim CamIris(8) As Integer
     Dim CamAgc(8) As Integer
+    Dim CamMaxAgc(8) As Integer
     Dim CamShutter(8) As Integer
     Dim CamGain(8) As Integer
     Dim CamWBRed(8) As Integer
@@ -213,6 +214,30 @@ Public Class MainForm
     Private Function SendCamCmd(ByVal cmd As String)
     End Function
 
+    Private Function SendCamCmdPut(ByVal caddr As Integer, ByVal cmd As String)
+        Dim webClient As New System.Net.WebClient
+        Dim url As String, result As String
+        If caddr = 0 Or caddr > 4 Then Return ""
+        If CamIgnore(caddr) = True Then Return ""
+        url = "http://" & Globals.CamIP(caddr) & ":4747/v1/" & cmd
+
+        Dim request As HttpWebRequest = HttpWebRequest.Create(url)
+        request.Method = "PUT"
+        request.Timeout = 1000
+        request.ReadWriteTimeout = 1000
+        result = ""
+        Try
+            'Dim wresp As HttpWebResponse = request.GetResponse()
+            request.GetResponse()
+
+        Catch ex As System.Net.WebException
+            CamIgnore(caddr) = True
+            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+        End Try
+        'CamCmdPending = False
+        Return result
+    End Function
+
     Private Function SendCamCmdAddr(ByVal caddr As Integer, ByVal cmd As String)
         Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
@@ -250,24 +275,25 @@ Public Class MainForm
         Dim op As String
 
         'If ((Not TextLeaderName.Focus) And (Not TextPreacherName.Focus)) Then
-        If False Then 'temporarily disable hotkeys
+        If True Then 'make false to temporarily disable hotkeys
 
             If e.KeyCode = 49 Then BtnCam1_Click(BtnCam1, Nothing)
             If e.KeyCode = 50 Then BtnCam1_Click(BtnCam2, Nothing)
             If e.KeyCode = 51 Then BtnCam1_Click(BtnCam3, Nothing)
             If e.KeyCode = 52 Then BtnCam1_Click(BtnCam4, Nothing)
-            If e.KeyCode = 53 Then BtnInp_Click(BtnInp1, Nothing)
-            If e.KeyCode = 54 Then BtnInp_Click(BtnInp2, Nothing)
-            If e.KeyCode = 55 Then BtnInp_Click(BtnInp3, Nothing)
-            If e.KeyCode = 56 Then BtnInp_Click(BtnInp4, Nothing)
+            If e.KeyCode = 56 Then BtnInp_Click(BtnInp1, Nothing)
+            If e.KeyCode = 53 Then BtnInp_Click(BtnInp2, Nothing)
+            If e.KeyCode = 54 Then BtnInp_Click(BtnInp3, Nothing)
+            If e.KeyCode = 55 Then BtnInp_Click(BtnInp4, Nothing)
             If e.KeyCode = Keys.Q Then BtnPreset_Click(BtnPreset1, Nothing)
             If e.KeyCode = Keys.W Then BtnPreset_Click(BtnPreset2, Nothing)
             If e.KeyCode = Keys.E Then BtnPreset_Click(BtnPreset3, Nothing)
             If e.KeyCode = Keys.R Then BtnPreset_Click(BtnPreset4, Nothing)
             'If e.KeyCode = Keys.C Then CheckBoxCU.Checked = True : BtnPreset_Click(BtnPreset9, Nothing)
-            If e.KeyCode = 32 Then BtnTransition_Click(Nothing, Nothing)
-            If e.KeyCode = Asc(".") Then BtnCut_Click(Nothing, Nothing)
+            If e.KeyCode = 109 Then BtnTransition_Click(Nothing, Nothing)
+            If e.KeyCode = 107 Then BtnCut_Click(Nothing, Nothing)
             If e.KeyCode = 17 Or e.KeyCode = Keys.O Then BtnOverlay_Click(Nothing, Nothing)
+            If e.KeyCode = 67 Or e.KeyCode = Keys.C Then BtnMediaOverlay_Click(Nothing, Nothing)
             If e.KeyCode = 100 Then 'left cursor (numeric keypad only)
                 If e.Modifiers = Keys.Control Then op = "PTS2050" Else op = "PTS4050"
                 If kc <> 37 Then SendCamCmd(op)
@@ -394,12 +420,23 @@ Public Class MainForm
             CamFocusManual(ta) = DroidCamValue(op, "focusMode")
             CamAgc(ta) = DroidCamValue(op, "exposure_lock")
             CamGain(ta) = DroidCamValue(op, "currExposure")
+            CamMaxAgc(ta) = DroidCamValue(op, "maxExposure")
             CamWBBlue(ta) = DroidCamValue(op, "wbMode")
             CamZoom(ta) = DroidCamValue(op, "currZoom")
         End If
         op = SendCamCmdAddr(ta, "phone/battery_level") 'get state
         If Len(op) > 0 Then CamBatt(ta) = Val(op)
         'If Val("&H" & Mid(op, 3)) = 1 Then CamFocusManual(ta) = 0 Else CamFocusManual(ta) = 1 'flag auto mode if return=1
+
+        'update buttons
+        UpdateCameraControls(ta)
+    End Sub
+
+    Sub UpdateCameraControls(ByVal ta As Integer)
+        If CamFocusManual(ta) <> 0 Then BtnFocus.BackColor = Color.Green : Else BtnFocus.BackColor = Color.White
+        If CamAgc(ta) <> 0 Then BtnAELock.BackColor = Color.Green : Else BtnAELock.BackColor = Color.White
+        TextBoxEV.Text = CamGain(ta) - Int(CamMaxAgc(ta) / 2)
+        If CamWBBlue(ta) < 8 Then ComboBoxWB.SelectedIndex = CamWBBlue(ta)
     End Sub
 
     '----------------------Read presets back from file-----------------------------------------------------
@@ -697,13 +734,6 @@ Public Class MainForm
     End Sub
 
     Sub ShowCamValues()
-        Dim ad As Integer
-        If (PTZLive = False) Then ad = addr Else ad = liveaddr
-        If CamFocusManual(ad) = 0 Then
-            BtnFocus.BackColor = Color.Green : BtnAELock.BackColor = Color.White
-        Else
-            BtnFocus.BackColor = Color.White : BtnAELock.BackColor = Color.Green
-        End If
     End Sub
     Sub setactive()
 
@@ -761,8 +791,9 @@ Public Class MainForm
         End If
 
         'cam settings
-        If (addr <= 4) Or addr = 7 Then
-            ShowCamValues()
+        If addr <= 4 Then
+            ReadbackCameraStates(addr)
+            UpdateCameraControls(addr)
             'load preset button captions
             UpdatePresets()
         End If
@@ -1152,19 +1183,22 @@ Public Class MainForm
     End Sub
 
     Private Sub SetCaptionText()
+        TextLeaderName.Text = (GetSetting("Atemswitcher", "Caption", "Leader", "*"))
+        TextPreacherName.Text = (GetSetting("Atemswitcher", "Caption", "Preacher", "*"))
+        TextCaptionOther.Text = (GetSetting("Atemswitcher", "Caption", "Other", "*"))
         If mediaindex = 1 Then
-            LabelCap1.Text = "Leader *" : LabelCap2.Text = "Preacher" : LabelCap3.Text = "Other"
+            LabelCap.Text = "Ld"
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Leader"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""" & TextLeaderName.Text & """,""message-id"":""TEST1""}")
         End If
         If mediaindex = 2 Then
-            LabelCap1.Text = "Leader" : LabelCap2.Text = "Preacher *" : LabelCap3.Text = "Other"
+            LabelCap.Text = "Pr"
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Preacher"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""   " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
 
         End If
         If mediaindex = 3 Then
-            LabelCap1.Text = "Leader" : LabelCap2.Text = "Preacher" : LabelCap3.Text = "Other *"
+            LabelCap.Text = "Oth"
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""" & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":"""",""message-id"":""TEST1""}")
 
@@ -1294,14 +1328,14 @@ Public Class MainForm
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        SendCamCmdAddr(ad, "camera/zoom_level/63")
+        SendCamCmdPut(ad, "camera/zoom_level/63")
         CamZoom(ad) = 63
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        SendCamCmdAddr(ad, "camera/zoom_level/0")
+        SendCamCmdPut(ad, "camera/zoom_level/0")
         CamZoom(ad) = 0
     End Sub
 
@@ -1928,7 +1962,7 @@ Public Class MainForm
                         CamRunZoom(i) = 0
                     End If
                 End If
-                SendCamCmdAddr(addr, "camera/zoom_level/" & CamZoom(i))
+                SendCamCmdPut(addr, "camera/zoom_level/" & CamZoom(i))
             End If
         Next
 
@@ -1976,36 +2010,58 @@ Public Class MainForm
 
     Private Sub BtnFocus_Click(sender As Object, e As EventArgs) Handles BtnFocus.Click
         If CamFocusManual(addr) = 0 Then
-            SendCamCmdAddr(addr, "camera/autofocus_mode/2")
+            SendCamCmdPut(addr, "camera/autofocus_mode/2")
+            CamFocusManual(addr) = 2
         Else
-            SendCamCmdAddr(addr, "camera/autofocus_mode/1")
+            SendCamCmdPut(addr, "camera/autofocus_mode/0")
+            CamFocusManual(addr) = 0
         End If
-        ReadbackCameraStates(addr)
+        UpdateCameraControls(addr)
     End Sub
 
     Private Sub BtnAELock_Click(sender As Object, e As EventArgs) Handles BtnAELock.Click
         If CamAgc(addr) = 0 Then
-            SendCamCmdAddr(addr, "camera/exposure_lock/1")
+            SendCamCmdPut(addr, "camera/exposure_lock/1")
+            CamAgc(addr) = 1
         Else
-            SendCamCmdAddr(addr, "camera/exposure_lock/0")
+            SendCamCmdPut(addr, "camera/exposure_lock/0")
+            CamAgc(addr) = 0
         End If
-        ReadbackCameraStates(addr)
+        UpdateCameraControls(addr)
     End Sub
+
+    Private Sub ButtonEVUp_Click(sender As Object, e As EventArgs) Handles ButtonEVUp.Click
+        If CamGain(addr) < CamMaxAgc(addr) Then
+            CamGain(addr) = CamGain(addr) + 1
+            SendCamCmdPut(addr, "camera/ev_level/" & CamGain(addr))
+        End If
+        UpdateCameraControls(addr)
+    End Sub
+
+    Private Sub ButtonEVDown_Click(sender As Object, e As EventArgs) Handles ButtonEVDown.Click
+        If CamGain(addr) > 0 Then
+            CamGain(addr) = CamGain(addr) - 1
+            SendCamCmdPut(addr, "camera/ev_level/" & CamGain(addr))
+        End If
+        UpdateCameraControls(addr)
+
+    End Sub
+
+    Private Sub ComboBoxWB_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxWB.SelectionChangeCommitted
+        CamWBBlue(addr) = ComboBoxWB.SelectedIndex
+        SendCamCmdPut(addr, "camera/wb_mode/" & CamWBBlue(addr))
+        UpdateCameraControls(addr)
+    End Sub
+
+
 
     Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
         'ticks every 1 sec
         'check OBS status (returns in websocket handler routine elsewhere)
         websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
 
-        If (PrevAux3 <> 0) Then 'we are playing a clip on obs
-            websocket.Send("{""request-type"":""GetCurrentScene"",""message-id"":""OBSSCENE""}")
-            If (ClipRemainTime > 0) Then ClipRemainTime = ClipRemainTime - 1
-            Dim hr As Integer = Math.Floor(ClipRemainTime / 3600)
-            Dim min As Integer = (Math.Floor(ClipRemainTime / 60)) Mod 60
-            Dim sec As Integer = ClipRemainTime Mod 60
-            TextPlayerTime.Text = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
-        End If
-
     End Sub
+
+
 
 End Class

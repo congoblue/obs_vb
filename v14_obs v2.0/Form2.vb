@@ -13,6 +13,13 @@ Public Class Form2
         SaveSetting("Atemswitcher", "CamIP", "3", TextBox3.Text)
         SaveSetting("Atemswitcher", "CamIP", "4", TextBox4.Text)
 
+        SaveSetting("Atemswitcher", "Caption", "Leader", TextLeader.Text)
+        MainForm.TextLeaderName.Text = TextLeader.Text
+        SaveSetting("Atemswitcher", "Caption", "Preacher", TextPreacher.Text)
+        MainForm.TextPreacherName.Text = TextPreacher.Text
+        SaveSetting("Atemswitcher", "Caption", "Other", TextOther.Text)
+        MainForm.TextCaptionOther.Text = TextOther.Text
+
         SaveSetting("Atemswitcher", "Set", "Tally", CheckBoxTally.Checked)
         SaveSetting("Atemswitcher", "Set", "Autoswap", CheckBoxAutoSwap.Checked)
         SaveSetting("Atemswitcher", "Set", "CamStandby", CheckBoxStandby.Checked)
@@ -54,6 +61,10 @@ Public Class Form2
         TextBox2.Text = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.145"))
         TextBox3.Text = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.146"))
         TextBox4.Text = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.147"))
+
+        TextLeader.Text = (GetSetting("Atemswitcher", "Caption", "Leader", "*"))
+        TextPreacher.Text = (GetSetting("Atemswitcher", "Caption", "Preacher", "*"))
+        TextOther.Text = (GetSetting("Atemswitcher", "Caption", "Other", "*"))
 
         TextBox5.Text = Globals.PresetFileName
         TextBox6.Text = Globals.PresetFilePath

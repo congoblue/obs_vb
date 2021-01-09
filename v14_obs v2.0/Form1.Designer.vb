@@ -35,10 +35,7 @@ Partial Class MainForm
         Me.BtnStop = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
-        Me.TextBox7 = New System.Windows.Forms.TextBox()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.TextBoxEV = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.ButtonSetup = New System.Windows.Forms.Button()
@@ -54,10 +51,7 @@ Partial Class MainForm
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.Label19 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
@@ -72,9 +66,7 @@ Partial Class MainForm
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TextBoxOBSBroadcastTime = New System.Windows.Forms.TextBox()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
-        Me.TextPlayerTime = New System.Windows.Forms.TextBox()
         Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
-        Me.Label23 = New System.Windows.Forms.Label()
         Me.TextBoxPipSrc = New System.Windows.Forms.TextBox()
         Me.TextLeaderName = New System.Windows.Forms.TextBox()
         Me.TextPreacherName = New System.Windows.Forms.TextBox()
@@ -86,6 +78,9 @@ Partial Class MainForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.LabelCap3 = New System.Windows.Forms.Label()
         Me.TextCaptionOther = New System.Windows.Forms.TextBox()
+        Me.ButtonEVUp = New System.Windows.Forms.Button()
+        Me.ButtonEVDown = New System.Windows.Forms.Button()
+        Me.ComboBoxWB = New System.Windows.Forms.ComboBox()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnPip = New AtemController.MyButton()
         Me.BtnOBSRecord = New AtemController.MyButton()
@@ -127,11 +122,12 @@ Partial Class MainForm
         Me.BtnCam2 = New AtemController.MyButton()
         Me.BtnCam1 = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
+        Me.LabelCap = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'eVISMacrosAppHost
         '
-        Me.eVISMacrosAppHost.Location = New System.Drawing.Point(13, 314)
+        Me.eVISMacrosAppHost.Location = New System.Drawing.Point(12, 293)
         Me.eVISMacrosAppHost.Name = "eVISMacrosAppHost"
         Me.eVISMacrosAppHost.Size = New System.Drawing.Size(141, 20)
         Me.eVISMacrosAppHost.TabIndex = 0
@@ -141,7 +137,7 @@ Partial Class MainForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(15, 197)
+        Me.Label1.Location = New System.Drawing.Point(-29, 147)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(231, 13)
         Me.Label1.TabIndex = 1
@@ -167,6 +163,7 @@ Partial Class MainForm
         Me.mLog.Size = New System.Drawing.Size(97, 93)
         Me.mLog.TabIndex = 4
         Me.mLog.Text = "Log window"
+        Me.mLog.Visible = False
         '
         'chkLogMessages
         '
@@ -174,7 +171,7 @@ Partial Class MainForm
         Me.chkLogMessages.Checked = True
         Me.chkLogMessages.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkLogMessages.ForeColor = System.Drawing.Color.White
-        Me.chkLogMessages.Location = New System.Drawing.Point(14, 340)
+        Me.chkLogMessages.Location = New System.Drawing.Point(13, 319)
         Me.chkLogMessages.Name = "chkLogMessages"
         Me.chkLogMessages.Size = New System.Drawing.Size(95, 17)
         Me.chkLogMessages.TabIndex = 44
@@ -202,7 +199,7 @@ Partial Class MainForm
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBox1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBox1.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox1.Location = New System.Drawing.Point(663, 551)
+        Me.TextBox1.Location = New System.Drawing.Point(559, 266)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(39, 22)
@@ -234,74 +231,35 @@ Partial Class MainForm
         '
         Me.TextBox2.BackColor = System.Drawing.Color.Black
         Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox2.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox2.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBox2.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox2.Location = New System.Drawing.Point(786, 560)
+        Me.TextBox2.Location = New System.Drawing.Point(480, 184)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(62, 25)
+        Me.TextBox2.Size = New System.Drawing.Size(60, 22)
         Me.TextBox2.TabIndex = 89
         Me.TextBox2.Text = "1.0"
         Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox5
+        'TextBoxEV
         '
-        Me.TextBox5.BackColor = System.Drawing.Color.Black
-        Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox5.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox5.Location = New System.Drawing.Point(378, 141)
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(46, 26)
-        Me.TextBox5.TabIndex = 116
-        Me.TextBox5.Text = "8"
-        Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBox6
-        '
-        Me.TextBox6.BackColor = System.Drawing.Color.Black
-        Me.TextBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox6.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox6.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox6.Location = New System.Drawing.Point(481, 141)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(46, 26)
-        Me.TextBox6.TabIndex = 119
-        Me.TextBox6.Text = "6"
-        Me.TextBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBox7
-        '
-        Me.TextBox7.BackColor = System.Drawing.Color.Black
-        Me.TextBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox7.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox7.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox7.Location = New System.Drawing.Point(430, 141)
-        Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(46, 26)
-        Me.TextBox7.TabIndex = 122
-        Me.TextBox7.Text = "10"
-        Me.TextBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBox9
-        '
-        Me.TextBox9.BackColor = System.Drawing.Color.Black
-        Me.TextBox9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox9.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox9.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox9.Location = New System.Drawing.Point(533, 141)
-        Me.TextBox9.Name = "TextBox9"
-        Me.TextBox9.Size = New System.Drawing.Size(46, 26)
-        Me.TextBox9.TabIndex = 129
-        Me.TextBox9.Text = "190"
-        Me.TextBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxEV.BackColor = System.Drawing.Color.Black
+        Me.TextBoxEV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxEV.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxEV.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxEV.Location = New System.Drawing.Point(281, 133)
+        Me.TextBoxEV.Name = "TextBoxEV"
+        Me.TextBoxEV.Size = New System.Drawing.Size(46, 22)
+        Me.TextBoxEV.TabIndex = 116
+        Me.TextBoxEV.Text = "0"
+        Me.TextBoxEV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label14
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.ForeColor = System.Drawing.Color.Yellow
-        Me.Label14.Location = New System.Drawing.Point(28, 560)
+        Me.Label14.Location = New System.Drawing.Point(9, 274)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(107, 16)
         Me.Label14.TabIndex = 155
@@ -310,7 +268,7 @@ Partial Class MainForm
         'ButtonSetup
         '
         Me.ButtonSetup.Font = New System.Drawing.Font("Webdings", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.ButtonSetup.Location = New System.Drawing.Point(39, 44)
+        Me.ButtonSetup.Location = New System.Drawing.Point(12, 29)
         Me.ButtonSetup.Name = "ButtonSetup"
         Me.ButtonSetup.Size = New System.Drawing.Size(46, 42)
         Me.ButtonSetup.TabIndex = 164
@@ -353,37 +311,37 @@ Partial Class MainForm
         '
         Me.LineShape11.BorderColor = System.Drawing.Color.Yellow
         Me.LineShape11.Name = "LineShape11"
-        Me.LineShape11.X1 = 671
-        Me.LineShape11.X2 = 863
-        Me.LineShape11.Y1 = 383
-        Me.LineShape11.Y2 = 383
+        Me.LineShape11.X1 = 665
+        Me.LineShape11.X2 = 857
+        Me.LineShape11.Y1 = 250
+        Me.LineShape11.Y2 = 250
         '
         'LineShape10
         '
         Me.LineShape10.BorderColor = System.Drawing.Color.Yellow
         Me.LineShape10.Name = "LineShape10"
-        Me.LineShape10.X1 = 670
-        Me.LineShape10.X2 = 862
-        Me.LineShape10.Y1 = 226
-        Me.LineShape10.Y2 = 226
+        Me.LineShape10.X1 = 666
+        Me.LineShape10.X2 = 858
+        Me.LineShape10.Y1 = 148
+        Me.LineShape10.Y2 = 148
         '
         'LineShape9
         '
         Me.LineShape9.BorderColor = System.Drawing.Color.Yellow
         Me.LineShape9.Name = "LineShape9"
-        Me.LineShape9.X1 = 671
-        Me.LineShape9.X2 = 863
-        Me.LineShape9.Y1 = 69
-        Me.LineShape9.Y2 = 69
+        Me.LineShape9.X1 = 478
+        Me.LineShape9.X2 = 616
+        Me.LineShape9.Y1 = 17
+        Me.LineShape9.Y2 = 18
         '
         'LineShape8
         '
         Me.LineShape8.BorderColor = System.Drawing.Color.Yellow
         Me.LineShape8.Name = "LineShape8"
-        Me.LineShape8.X1 = 164
-        Me.LineShape8.X2 = 575
-        Me.LineShape8.Y1 = 68
-        Me.LineShape8.Y2 = 68
+        Me.LineShape8.X1 = 101
+        Me.LineShape8.X2 = 423
+        Me.LineShape8.Y1 = 17
+        Me.LineShape8.Y2 = 17
         '
         'LineShape2
         '
@@ -408,7 +366,7 @@ Partial Class MainForm
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label16.ForeColor = System.Drawing.Color.Yellow
-        Me.Label16.Location = New System.Drawing.Point(787, 532)
+        Me.Label16.Location = New System.Drawing.Point(486, 165)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(47, 16)
         Me.Label16.TabIndex = 185
@@ -419,7 +377,7 @@ Partial Class MainForm
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label17.ForeColor = System.Drawing.Color.Yellow
-        Me.Label17.Location = New System.Drawing.Point(45, 25)
+        Me.Label17.Location = New System.Drawing.Point(18, 10)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(40, 16)
         Me.Label17.TabIndex = 186
@@ -430,62 +388,29 @@ Partial Class MainForm
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label18.ForeColor = System.Drawing.Color.Yellow
-        Me.Label18.Location = New System.Drawing.Point(128, 59)
+        Me.Label18.Location = New System.Drawing.Point(84, 9)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(94, 16)
         Me.Label18.TabIndex = 187
         Me.Label18.Text = "Camera controls"
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.ForeColor = System.Drawing.Color.Yellow
-        Me.Label19.Location = New System.Drawing.Point(335, 82)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(25, 16)
-        Me.Label19.TabIndex = 189
-        Me.Label19.Text = "Iris"
         '
         'Label20
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label20.ForeColor = System.Drawing.Color.Yellow
-        Me.Label20.Location = New System.Drawing.Point(385, 82)
+        Me.Label20.Location = New System.Drawing.Point(290, 91)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(31, 16)
+        Me.Label20.Size = New System.Drawing.Size(22, 16)
         Me.Label20.TabIndex = 190
-        Me.Label20.Text = "AGC"
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.ForeColor = System.Drawing.Color.Yellow
-        Me.Label8.Location = New System.Drawing.Point(423, 82)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(60, 16)
-        Me.Label8.TabIndex = 195
-        Me.Label8.Text = "AGC Limit"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.ForeColor = System.Drawing.Color.Yellow
-        Me.Label9.Location = New System.Drawing.Point(481, 82)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(51, 16)
-        Me.Label9.TabIndex = 198
-        Me.Label9.Text = "AE Shift"
+        Me.Label20.Text = "EV"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.Yellow
-        Me.Label10.Location = New System.Drawing.Point(537, 82)
+        Me.Label10.Location = New System.Drawing.Point(356, 91)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(27, 16)
         Me.Label10.TabIndex = 208
@@ -520,7 +445,7 @@ Partial Class MainForm
         'Button2
         '
         Me.Button2.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.Button2.Location = New System.Drawing.Point(266, 127)
+        Me.Button2.Location = New System.Drawing.Point(222, 77)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(46, 25)
         Me.Button2.TabIndex = 224
@@ -530,7 +455,7 @@ Partial Class MainForm
         'Button3
         '
         Me.Button3.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.Button3.Location = New System.Drawing.Point(266, 100)
+        Me.Button3.Location = New System.Drawing.Point(222, 50)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(46, 25)
         Me.Button3.TabIndex = 225
@@ -540,7 +465,7 @@ Partial Class MainForm
         'Button4
         '
         Me.Button4.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.Button4.Location = New System.Drawing.Point(266, 205)
+        Me.Button4.Location = New System.Drawing.Point(222, 155)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(46, 25)
         Me.Button4.TabIndex = 226
@@ -550,7 +475,7 @@ Partial Class MainForm
         'Button6
         '
         Me.Button6.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.Button6.Location = New System.Drawing.Point(266, 175)
+        Me.Button6.Location = New System.Drawing.Point(222, 125)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(46, 25)
         Me.Button6.TabIndex = 227
@@ -562,7 +487,7 @@ Partial Class MainForm
         Me.Label25.AutoSize = True
         Me.Label25.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label25.ForeColor = System.Drawing.Color.Yellow
-        Me.Label25.Location = New System.Drawing.Point(270, 82)
+        Me.Label25.Location = New System.Drawing.Point(226, 32)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(38, 16)
         Me.Label25.TabIndex = 228
@@ -571,7 +496,7 @@ Partial Class MainForm
         'Button5
         '
         Me.Button5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button5.Location = New System.Drawing.Point(39, 92)
+        Me.Button5.Location = New System.Drawing.Point(12, 77)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(46, 42)
         Me.Button5.TabIndex = 247
@@ -595,7 +520,7 @@ Partial Class MainForm
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Yellow
-        Me.Label6.Location = New System.Drawing.Point(614, 59)
+        Me.Label6.Location = New System.Drawing.Point(475, 9)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(88, 16)
         Me.Label6.TabIndex = 267
@@ -605,53 +530,27 @@ Partial Class MainForm
         '
         Me.TextBoxOBSBroadcastTime.BackColor = System.Drawing.Color.Black
         Me.TextBoxOBSBroadcastTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxOBSBroadcastTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(689, 101)
+        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(534, 44)
         Me.TextBoxOBSBroadcastTime.Name = "TextBoxOBSBroadcastTime"
-        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(162, 26)
+        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(83, 22)
         Me.TextBoxOBSBroadcastTime.TabIndex = 268
         Me.TextBoxOBSBroadcastTime.Text = "..."
         Me.TextBoxOBSBroadcastTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextPlayerTime
-        '
-        Me.TextPlayerTime.BackColor = System.Drawing.Color.Black
-        Me.TextPlayerTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextPlayerTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextPlayerTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextPlayerTime.Location = New System.Drawing.Point(349, 515)
-        Me.TextPlayerTime.Name = "TextPlayerTime"
-        Me.TextPlayerTime.Size = New System.Drawing.Size(215, 26)
-        Me.TextPlayerTime.TabIndex = 279
-        Me.TextPlayerTime.Text = "00:00:00"
-        Me.TextPlayerTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.TextPlayerTime.Visible = False
         '
         'TextBoxOBSRecTime
         '
         Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
         Me.TextBoxOBSRecTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxOBSRecTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(689, 161)
+        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(533, 94)
         Me.TextBoxOBSRecTime.Name = "TextBoxOBSRecTime"
-        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(162, 26)
+        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(83, 22)
         Me.TextBoxOBSRecTime.TabIndex = 296
         Me.TextBoxOBSRecTime.Text = "..."
         Me.TextBoxOBSRecTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.ForeColor = System.Drawing.Color.Yellow
-        Me.Label23.Location = New System.Drawing.Point(402, 483)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(74, 16)
-        Me.Label23.TabIndex = 297
-        Me.Label23.Text = "Clip time left"
-        Me.Label23.Visible = False
         '
         'TextBoxPipSrc
         '
@@ -659,7 +558,7 @@ Partial Class MainForm
         Me.TextBoxPipSrc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBoxPipSrc.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPipSrc.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxPipSrc.Location = New System.Drawing.Point(484, 551)
+        Me.TextBoxPipSrc.Location = New System.Drawing.Point(409, 265)
         Me.TextBoxPipSrc.Multiline = True
         Me.TextBoxPipSrc.Name = "TextBoxPipSrc"
         Me.TextBoxPipSrc.Size = New System.Drawing.Size(60, 22)
@@ -671,11 +570,11 @@ Partial Class MainForm
         '
         Me.TextLeaderName.BackColor = System.Drawing.Color.Black
         Me.TextLeaderName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextLeaderName.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextLeaderName.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextLeaderName.ForeColor = System.Drawing.Color.Yellow
-        Me.TextLeaderName.Location = New System.Drawing.Point(690, 242)
+        Me.TextLeaderName.Location = New System.Drawing.Point(689, 159)
         Me.TextLeaderName.Name = "TextLeaderName"
-        Me.TextLeaderName.Size = New System.Drawing.Size(162, 26)
+        Me.TextLeaderName.Size = New System.Drawing.Size(140, 22)
         Me.TextLeaderName.TabIndex = 308
         Me.TextLeaderName.Text = "..."
         Me.TextLeaderName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -684,11 +583,11 @@ Partial Class MainForm
         '
         Me.TextPreacherName.BackColor = System.Drawing.Color.Black
         Me.TextPreacherName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextPreacherName.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextPreacherName.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextPreacherName.ForeColor = System.Drawing.Color.Yellow
-        Me.TextPreacherName.Location = New System.Drawing.Point(689, 277)
+        Me.TextPreacherName.Location = New System.Drawing.Point(689, 186)
         Me.TextPreacherName.Name = "TextPreacherName"
-        Me.TextPreacherName.Size = New System.Drawing.Size(162, 26)
+        Me.TextPreacherName.Size = New System.Drawing.Size(140, 22)
         Me.TextPreacherName.TabIndex = 309
         Me.TextPreacherName.Text = "..."
         Me.TextPreacherName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -698,7 +597,7 @@ Partial Class MainForm
         Me.LabelCap1.AutoSize = True
         Me.LabelCap1.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelCap1.ForeColor = System.Drawing.Color.Yellow
-        Me.LabelCap1.Location = New System.Drawing.Point(640, 246)
+        Me.LabelCap1.Location = New System.Drawing.Point(635, 164)
         Me.LabelCap1.Name = "LabelCap1"
         Me.LabelCap1.Size = New System.Drawing.Size(48, 16)
         Me.LabelCap1.TabIndex = 310
@@ -709,7 +608,7 @@ Partial Class MainForm
         Me.LabelCap2.AutoSize = True
         Me.LabelCap2.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelCap2.ForeColor = System.Drawing.Color.Yellow
-        Me.LabelCap2.Location = New System.Drawing.Point(629, 281)
+        Me.LabelCap2.Location = New System.Drawing.Point(628, 190)
         Me.LabelCap2.Name = "LabelCap2"
         Me.LabelCap2.Size = New System.Drawing.Size(54, 16)
         Me.LabelCap2.TabIndex = 311
@@ -720,7 +619,7 @@ Partial Class MainForm
         Me.Label27.AutoSize = True
         Me.Label27.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label27.ForeColor = System.Drawing.Color.Yellow
-        Me.Label27.Location = New System.Drawing.Point(623, 218)
+        Me.Label27.Location = New System.Drawing.Point(630, 140)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(73, 16)
         Me.Label27.TabIndex = 312
@@ -731,7 +630,7 @@ Partial Class MainForm
         Me.Label28.AutoSize = True
         Me.Label28.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label28.ForeColor = System.Drawing.Color.Yellow
-        Me.Label28.Location = New System.Drawing.Point(618, 374)
+        Me.Label28.Location = New System.Drawing.Point(629, 242)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(74, 16)
         Me.Label28.TabIndex = 313
@@ -746,15 +645,15 @@ Partial Class MainForm
         Me.ListBoxMedia.FormattingEnabled = True
         Me.ListBoxMedia.ItemHeight = 16
         Me.ListBoxMedia.Items.AddRange(New Object() {"..."})
-        Me.ListBoxMedia.Location = New System.Drawing.Point(689, 413)
+        Me.ListBoxMedia.Location = New System.Drawing.Point(687, 261)
         Me.ListBoxMedia.Name = "ListBoxMedia"
-        Me.ListBoxMedia.Size = New System.Drawing.Size(163, 82)
+        Me.ListBoxMedia.Size = New System.Drawing.Size(142, 82)
         Me.ListBoxMedia.TabIndex = 314
         '
         'Button9
         '
         Me.Button9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button9.Location = New System.Drawing.Point(39, 140)
+        Me.Button9.Location = New System.Drawing.Point(12, 125)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(46, 42)
         Me.Button9.TabIndex = 315
@@ -766,7 +665,7 @@ Partial Class MainForm
         Me.LabelCap3.AutoSize = True
         Me.LabelCap3.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelCap3.ForeColor = System.Drawing.Color.Yellow
-        Me.LabelCap3.Location = New System.Drawing.Point(641, 318)
+        Me.LabelCap3.Location = New System.Drawing.Point(645, 215)
         Me.LabelCap3.Name = "LabelCap3"
         Me.LabelCap3.Size = New System.Drawing.Size(37, 16)
         Me.LabelCap3.TabIndex = 317
@@ -776,20 +675,58 @@ Partial Class MainForm
         '
         Me.TextCaptionOther.BackColor = System.Drawing.Color.Black
         Me.TextCaptionOther.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextCaptionOther.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextCaptionOther.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextCaptionOther.ForeColor = System.Drawing.Color.Yellow
-        Me.TextCaptionOther.Location = New System.Drawing.Point(690, 314)
+        Me.TextCaptionOther.Location = New System.Drawing.Point(689, 213)
         Me.TextCaptionOther.Name = "TextCaptionOther"
-        Me.TextCaptionOther.Size = New System.Drawing.Size(162, 26)
+        Me.TextCaptionOther.Size = New System.Drawing.Size(140, 22)
         Me.TextCaptionOther.TabIndex = 316
         Me.TextCaptionOther.Text = "..."
         Me.TextCaptionOther.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'ButtonEVUp
+        '
+        Me.ButtonEVUp.Font = New System.Drawing.Font("Webdings", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.ButtonEVUp.Location = New System.Drawing.Point(281, 110)
+        Me.ButtonEVUp.Name = "ButtonEVUp"
+        Me.ButtonEVUp.Size = New System.Drawing.Size(46, 20)
+        Me.ButtonEVUp.TabIndex = 318
+        Me.ButtonEVUp.Text = "5"
+        Me.ButtonEVUp.UseCompatibleTextRendering = True
+        Me.ButtonEVUp.UseVisualStyleBackColor = True
+        '
+        'ButtonEVDown
+        '
+        Me.ButtonEVDown.Font = New System.Drawing.Font("Webdings", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.ButtonEVDown.Location = New System.Drawing.Point(281, 158)
+        Me.ButtonEVDown.Margin = New System.Windows.Forms.Padding(0)
+        Me.ButtonEVDown.Name = "ButtonEVDown"
+        Me.ButtonEVDown.Size = New System.Drawing.Size(46, 20)
+        Me.ButtonEVDown.TabIndex = 319
+        Me.ButtonEVDown.Text = "6"
+        Me.ButtonEVDown.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.ButtonEVDown.UseCompatibleTextRendering = True
+        Me.ButtonEVDown.UseVisualStyleBackColor = True
+        '
+        'ComboBoxWB
+        '
+        Me.ComboBoxWB.BackColor = System.Drawing.Color.Black
+        Me.ComboBoxWB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxWB.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ComboBoxWB.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBoxWB.ForeColor = System.Drawing.Color.Yellow
+        Me.ComboBoxWB.FormattingEnabled = True
+        Me.ComboBoxWB.Items.AddRange(New Object() {"Auto", "2800", "3000", "3500", "4000", "5000", "6000", "8000"})
+        Me.ComboBoxWB.Location = New System.Drawing.Point(333, 132)
+        Me.ComboBoxWB.Name = "ComboBoxWB"
+        Me.ComboBoxWB.Size = New System.Drawing.Size(89, 24)
+        Me.ComboBoxWB.TabIndex = 323
         '
         'BtnMNext
         '
         Me.BtnMNext.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMNext.Image = CType(resources.GetObject("BtnMNext.Image"), System.Drawing.Image)
-        Me.BtnMNext.Location = New System.Drawing.Point(628, 469)
+        Me.BtnMNext.Location = New System.Drawing.Point(640, 303)
         Me.BtnMNext.Name = "BtnMNext"
         Me.BtnMNext.Size = New System.Drawing.Size(40, 40)
         Me.BtnMNext.TabIndex = 307
@@ -800,7 +737,7 @@ Partial Class MainForm
         '
         Me.BtnPip.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPip.Image = CType(resources.GetObject("BtnPip.Image"), System.Drawing.Image)
-        Me.BtnPip.Location = New System.Drawing.Point(494, 579)
+        Me.BtnPip.Location = New System.Drawing.Point(419, 293)
         Me.BtnPip.Name = "BtnPip"
         Me.BtnPip.Size = New System.Drawing.Size(50, 50)
         Me.BtnPip.TabIndex = 303
@@ -809,9 +746,9 @@ Partial Class MainForm
         '
         'BtnOBSRecord
         '
-        Me.BtnOBSRecord.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnOBSRecord.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnOBSRecord.Image = CType(resources.GetObject("BtnOBSRecord.Image"), System.Drawing.Image)
-        Me.BtnOBSRecord.Location = New System.Drawing.Point(633, 150)
+        Me.BtnOBSRecord.Location = New System.Drawing.Point(477, 84)
         Me.BtnOBSRecord.Name = "BtnOBSRecord"
         Me.BtnOBSRecord.Size = New System.Drawing.Size(50, 50)
         Me.BtnOBSRecord.TabIndex = 295
@@ -820,20 +757,20 @@ Partial Class MainForm
         '
         'BtnOBSBroadcast
         '
-        Me.BtnOBSBroadcast.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnOBSBroadcast.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnOBSBroadcast.Image = CType(resources.GetObject("BtnOBSBroadcast.Image"), System.Drawing.Image)
-        Me.BtnOBSBroadcast.Location = New System.Drawing.Point(633, 89)
+        Me.BtnOBSBroadcast.Location = New System.Drawing.Point(478, 32)
         Me.BtnOBSBroadcast.Name = "BtnOBSBroadcast"
         Me.BtnOBSBroadcast.Size = New System.Drawing.Size(50, 50)
         Me.BtnOBSBroadcast.TabIndex = 294
-        Me.BtnOBSBroadcast.Text = "Broad cast"
+        Me.BtnOBSBroadcast.Text = "Stream"
         Me.BtnOBSBroadcast.UseVisualStyleBackColor = True
         '
         'BtnMPrev
         '
         Me.BtnMPrev.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMPrev.Image = CType(resources.GetObject("BtnMPrev.Image"), System.Drawing.Image)
-        Me.BtnMPrev.Location = New System.Drawing.Point(628, 413)
+        Me.BtnMPrev.Location = New System.Drawing.Point(640, 261)
         Me.BtnMPrev.Name = "BtnMPrev"
         Me.BtnMPrev.Size = New System.Drawing.Size(40, 40)
         Me.BtnMPrev.TabIndex = 290
@@ -899,7 +836,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamDR.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamDR.Image = CType(resources.GetObject("MyButtonCamDR.Image"), System.Drawing.Image)
-        Me.MyButtonCamDR.Location = New System.Drawing.Point(203, 190)
+        Me.MyButtonCamDR.Location = New System.Drawing.Point(159, 140)
         Me.MyButtonCamDR.Name = "MyButtonCamDR"
         Me.MyButtonCamDR.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamDR.TabIndex = 223
@@ -910,7 +847,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamD.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamD.Image = CType(resources.GetObject("MyButtonCamD.Image"), System.Drawing.Image)
-        Me.MyButtonCamD.Location = New System.Drawing.Point(162, 190)
+        Me.MyButtonCamD.Location = New System.Drawing.Point(118, 140)
         Me.MyButtonCamD.Name = "MyButtonCamD"
         Me.MyButtonCamD.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamD.TabIndex = 222
@@ -921,7 +858,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamDL.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamDL.Image = CType(resources.GetObject("MyButtonCamDL.Image"), System.Drawing.Image)
-        Me.MyButtonCamDL.Location = New System.Drawing.Point(120, 190)
+        Me.MyButtonCamDL.Location = New System.Drawing.Point(76, 140)
         Me.MyButtonCamDL.Name = "MyButtonCamDL"
         Me.MyButtonCamDL.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamDL.TabIndex = 221
@@ -932,7 +869,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamR.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamR.Image = CType(resources.GetObject("MyButtonCamR.Image"), System.Drawing.Image)
-        Me.MyButtonCamR.Location = New System.Drawing.Point(203, 144)
+        Me.MyButtonCamR.Location = New System.Drawing.Point(159, 94)
         Me.MyButtonCamR.Name = "MyButtonCamR"
         Me.MyButtonCamR.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamR.TabIndex = 220
@@ -943,7 +880,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamL.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamL.Image = CType(resources.GetObject("MyButtonCamL.Image"), System.Drawing.Image)
-        Me.MyButtonCamL.Location = New System.Drawing.Point(120, 144)
+        Me.MyButtonCamL.Location = New System.Drawing.Point(76, 94)
         Me.MyButtonCamL.Name = "MyButtonCamL"
         Me.MyButtonCamL.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamL.TabIndex = 219
@@ -954,7 +891,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamUR.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamUR.Image = CType(resources.GetObject("MyButtonCamUR.Image"), System.Drawing.Image)
-        Me.MyButtonCamUR.Location = New System.Drawing.Point(203, 100)
+        Me.MyButtonCamUR.Location = New System.Drawing.Point(159, 50)
         Me.MyButtonCamUR.Name = "MyButtonCamUR"
         Me.MyButtonCamUR.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamUR.TabIndex = 218
@@ -965,7 +902,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamU.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamU.Image = CType(resources.GetObject("MyButtonCamU.Image"), System.Drawing.Image)
-        Me.MyButtonCamU.Location = New System.Drawing.Point(162, 100)
+        Me.MyButtonCamU.Location = New System.Drawing.Point(118, 50)
         Me.MyButtonCamU.Name = "MyButtonCamU"
         Me.MyButtonCamU.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamU.TabIndex = 217
@@ -976,7 +913,7 @@ Partial Class MainForm
         '
         Me.MyButtonCamUL.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.MyButtonCamUL.Image = CType(resources.GetObject("MyButtonCamUL.Image"), System.Drawing.Image)
-        Me.MyButtonCamUL.Location = New System.Drawing.Point(120, 100)
+        Me.MyButtonCamUL.Location = New System.Drawing.Point(76, 50)
         Me.MyButtonCamUL.Name = "MyButtonCamUL"
         Me.MyButtonCamUL.Size = New System.Drawing.Size(40, 40)
         Me.MyButtonCamUL.TabIndex = 216
@@ -987,7 +924,7 @@ Partial Class MainForm
         '
         Me.BtnAELock.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnAELock.Image = CType(resources.GetObject("BtnAELock.Image"), System.Drawing.Image)
-        Me.BtnAELock.Location = New System.Drawing.Point(374, 198)
+        Me.BtnAELock.Location = New System.Drawing.Point(330, 32)
         Me.BtnAELock.Name = "BtnAELock"
         Me.BtnAELock.Size = New System.Drawing.Size(50, 50)
         Me.BtnAELock.TabIndex = 211
@@ -998,7 +935,7 @@ Partial Class MainForm
         '
         Me.BtnFocus.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnFocus.Image = CType(resources.GetObject("BtnFocus.Image"), System.Drawing.Image)
-        Me.BtnFocus.Location = New System.Drawing.Point(323, 198)
+        Me.BtnFocus.Location = New System.Drawing.Point(279, 32)
         Me.BtnFocus.Name = "BtnFocus"
         Me.BtnFocus.Size = New System.Drawing.Size(50, 50)
         Me.BtnFocus.TabIndex = 210
@@ -1074,9 +1011,9 @@ Partial Class MainForm
         'BtnMediaNxt
         '
         Me.BtnMediaNxt.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnMediaNxt.Location = New System.Drawing.Point(897, 551)
+        Me.BtnMediaNxt.Location = New System.Drawing.Point(573, 182)
         Me.BtnMediaNxt.Name = "BtnMediaNxt"
-        Me.BtnMediaNxt.Size = New System.Drawing.Size(35, 35)
+        Me.BtnMediaNxt.Size = New System.Drawing.Size(20, 20)
         Me.BtnMediaNxt.TabIndex = 154
         Me.BtnMediaNxt.Text = "u"
         Me.BtnMediaNxt.UseVisualStyleBackColor = True
@@ -1085,7 +1022,7 @@ Partial Class MainForm
         '
         Me.BtnMediaOverlay.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMediaOverlay.Image = CType(resources.GetObject("BtnMediaOverlay.Image"), System.Drawing.Image)
-        Me.BtnMediaOverlay.Location = New System.Drawing.Point(857, 591)
+        Me.BtnMediaOverlay.Location = New System.Drawing.Point(547, 208)
         Me.BtnMediaOverlay.Name = "BtnMediaOverlay"
         Me.BtnMediaOverlay.Size = New System.Drawing.Size(50, 50)
         Me.BtnMediaOverlay.TabIndex = 153
@@ -1096,7 +1033,7 @@ Partial Class MainForm
         '
         Me.BtnOverlay.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnOverlay.Image = CType(resources.GetObject("BtnOverlay.Image"), System.Drawing.Image)
-        Me.BtnOverlay.Location = New System.Drawing.Point(780, 591)
+        Me.BtnOverlay.Location = New System.Drawing.Point(483, 209)
         Me.BtnOverlay.Name = "BtnOverlay"
         Me.BtnOverlay.Size = New System.Drawing.Size(50, 50)
         Me.BtnOverlay.TabIndex = 152
@@ -1107,9 +1044,9 @@ Partial Class MainForm
         '
         Me.BtnTransition.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnTransition.Image = CType(resources.GetObject("BtnTransition.Image"), System.Drawing.Image)
-        Me.BtnTransition.Location = New System.Drawing.Point(644, 579)
+        Me.BtnTransition.Location = New System.Drawing.Point(547, 293)
         Me.BtnTransition.Name = "BtnTransition"
-        Me.BtnTransition.Size = New System.Drawing.Size(75, 50)
+        Me.BtnTransition.Size = New System.Drawing.Size(65, 50)
         Me.BtnTransition.TabIndex = 151
         Me.BtnTransition.Text = "Fade"
         Me.BtnTransition.UseVisualStyleBackColor = True
@@ -1118,9 +1055,9 @@ Partial Class MainForm
         '
         Me.BtnCut.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnCut.Image = CType(resources.GetObject("BtnCut.Image"), System.Drawing.Image)
-        Me.BtnCut.Location = New System.Drawing.Point(562, 579)
+        Me.BtnCut.Location = New System.Drawing.Point(477, 293)
         Me.BtnCut.Name = "BtnCut"
-        Me.BtnCut.Size = New System.Drawing.Size(75, 50)
+        Me.BtnCut.Size = New System.Drawing.Size(65, 50)
         Me.BtnCut.TabIndex = 150
         Me.BtnCut.Text = "Cut"
         Me.BtnCut.UseVisualStyleBackColor = True
@@ -1128,9 +1065,9 @@ Partial Class MainForm
         'BtnMediaPrev
         '
         Me.BtnMediaPrev.Font = New System.Drawing.Font("Wingdings 3", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnMediaPrev.Location = New System.Drawing.Point(861, 551)
+        Me.BtnMediaPrev.Location = New System.Drawing.Point(547, 182)
         Me.BtnMediaPrev.Name = "BtnMediaPrev"
-        Me.BtnMediaPrev.Size = New System.Drawing.Size(35, 35)
+        Me.BtnMediaPrev.Size = New System.Drawing.Size(20, 20)
         Me.BtnMediaPrev.TabIndex = 149
         Me.BtnMediaPrev.Text = "t"
         Me.BtnMediaPrev.UseVisualStyleBackColor = True
@@ -1139,7 +1076,7 @@ Partial Class MainForm
         '
         Me.BtnInp4.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnInp4.Image = CType(resources.GetObject("BtnInp4.Image"), System.Drawing.Image)
-        Me.BtnInp4.Location = New System.Drawing.Point(364, 579)
+        Me.BtnInp4.Location = New System.Drawing.Point(312, 293)
         Me.BtnInp4.Name = "BtnInp4"
         Me.BtnInp4.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp4.TabIndex = 148
@@ -1150,7 +1087,7 @@ Partial Class MainForm
         '
         Me.BtnInp3.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnInp3.Image = CType(resources.GetObject("BtnInp3.Image"), System.Drawing.Image)
-        Me.BtnInp3.Location = New System.Drawing.Point(308, 579)
+        Me.BtnInp3.Location = New System.Drawing.Point(262, 293)
         Me.BtnInp3.Name = "BtnInp3"
         Me.BtnInp3.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp3.TabIndex = 147
@@ -1161,7 +1098,7 @@ Partial Class MainForm
         '
         Me.BtnInp2.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnInp2.Image = CType(resources.GetObject("BtnInp2.Image"), System.Drawing.Image)
-        Me.BtnInp2.Location = New System.Drawing.Point(252, 579)
+        Me.BtnInp2.Location = New System.Drawing.Point(212, 293)
         Me.BtnInp2.Name = "BtnInp2"
         Me.BtnInp2.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp2.TabIndex = 146
@@ -1172,7 +1109,7 @@ Partial Class MainForm
         '
         Me.BtnInp1.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnInp1.Image = CType(resources.GetObject("BtnInp1.Image"), System.Drawing.Image)
-        Me.BtnInp1.Location = New System.Drawing.Point(420, 579)
+        Me.BtnInp1.Location = New System.Drawing.Point(362, 293)
         Me.BtnInp1.Name = "BtnInp1"
         Me.BtnInp1.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp1.TabIndex = 145
@@ -1183,7 +1120,7 @@ Partial Class MainForm
         '
         Me.BtnCam4.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnCam4.Image = CType(resources.GetObject("BtnCam4.Image"), System.Drawing.Image)
-        Me.BtnCam4.Location = New System.Drawing.Point(196, 579)
+        Me.BtnCam4.Location = New System.Drawing.Point(162, 293)
         Me.BtnCam4.Name = "BtnCam4"
         Me.BtnCam4.Size = New System.Drawing.Size(50, 50)
         Me.BtnCam4.TabIndex = 144
@@ -1194,7 +1131,7 @@ Partial Class MainForm
         '
         Me.BtnCam3.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnCam3.Image = CType(resources.GetObject("BtnCam3.Image"), System.Drawing.Image)
-        Me.BtnCam3.Location = New System.Drawing.Point(141, 579)
+        Me.BtnCam3.Location = New System.Drawing.Point(112, 293)
         Me.BtnCam3.Name = "BtnCam3"
         Me.BtnCam3.Size = New System.Drawing.Size(50, 50)
         Me.BtnCam3.TabIndex = 143
@@ -1205,7 +1142,7 @@ Partial Class MainForm
         '
         Me.BtnCam2.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnCam2.Image = CType(resources.GetObject("BtnCam2.Image"), System.Drawing.Image)
-        Me.BtnCam2.Location = New System.Drawing.Point(85, 579)
+        Me.BtnCam2.Location = New System.Drawing.Point(62, 293)
         Me.BtnCam2.Name = "BtnCam2"
         Me.BtnCam2.Size = New System.Drawing.Size(50, 50)
         Me.BtnCam2.TabIndex = 142
@@ -1216,7 +1153,7 @@ Partial Class MainForm
         '
         Me.BtnCam1.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnCam1.Image = CType(resources.GetObject("BtnCam1.Image"), System.Drawing.Image)
-        Me.BtnCam1.Location = New System.Drawing.Point(31, 579)
+        Me.BtnCam1.Location = New System.Drawing.Point(12, 293)
         Me.BtnCam1.Name = "BtnCam1"
         Me.BtnCam1.Size = New System.Drawing.Size(50, 50)
         Me.BtnCam1.TabIndex = 141
@@ -1227,12 +1164,23 @@ Partial Class MainForm
         '
         Me.OverrideBtn.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OverrideBtn.Image = CType(resources.GetObject("OverrideBtn.Image"), System.Drawing.Image)
-        Me.OverrideBtn.Location = New System.Drawing.Point(210, 240)
+        Me.OverrideBtn.Location = New System.Drawing.Point(166, 190)
         Me.OverrideBtn.Name = "OverrideBtn"
         Me.OverrideBtn.Size = New System.Drawing.Size(40, 40)
         Me.OverrideBtn.TabIndex = 238
         Me.OverrideBtn.Text = "Over ride"
         Me.OverrideBtn.UseVisualStyleBackColor = True
+        '
+        'LabelCap
+        '
+        Me.LabelCap.AutoSize = True
+        Me.LabelCap.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelCap.ForeColor = System.Drawing.Color.Yellow
+        Me.LabelCap.Location = New System.Drawing.Point(556, 164)
+        Me.LabelCap.Name = "LabelCap"
+        Me.LabelCap.Size = New System.Drawing.Size(22, 16)
+        Me.LabelCap.TabIndex = 324
+        Me.LabelCap.Text = "Ld"
         '
         'MainForm
         '
@@ -1240,6 +1188,10 @@ Partial Class MainForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1280, 708)
+        Me.Controls.Add(Me.LabelCap)
+        Me.Controls.Add(Me.ComboBoxWB)
+        Me.Controls.Add(Me.ButtonEVDown)
+        Me.Controls.Add(Me.ButtonEVUp)
         Me.Controls.Add(Me.LabelCap3)
         Me.Controls.Add(Me.TextCaptionOther)
         Me.Controls.Add(Me.Button9)
@@ -1253,12 +1205,10 @@ Partial Class MainForm
         Me.Controls.Add(Me.BtnMNext)
         Me.Controls.Add(Me.BtnPip)
         Me.Controls.Add(Me.TextBoxPipSrc)
-        Me.Controls.Add(Me.Label23)
         Me.Controls.Add(Me.TextBoxOBSRecTime)
         Me.Controls.Add(Me.BtnOBSRecord)
         Me.Controls.Add(Me.BtnOBSBroadcast)
         Me.Controls.Add(Me.BtnMPrev)
-        Me.Controls.Add(Me.TextPlayerTime)
         Me.Controls.Add(Me.TextBoxOBSBroadcastTime)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.LabelProfile)
@@ -1286,10 +1236,7 @@ Partial Class MainForm
         Me.Controls.Add(Me.BtnAELock)
         Me.Controls.Add(Me.BtnFocus)
         Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label20)
-        Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label16)
@@ -1321,10 +1268,7 @@ Partial Class MainForm
         Me.Controls.Add(Me.BtnCam2)
         Me.Controls.Add(Me.BtnCam1)
         Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.TextBox9)
-        Me.Controls.Add(Me.TextBox7)
-        Me.Controls.Add(Me.TextBox6)
-        Me.Controls.Add(Me.TextBox5)
+        Me.Controls.Add(Me.TextBoxEV)
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.chkLogMessages)
         Me.Controls.Add(Me.mLog)
@@ -1351,10 +1295,7 @@ Partial Class MainForm
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents BtnStop As System.Windows.Forms.Button
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox9 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxEV As System.Windows.Forms.TextBox
     Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents BtnCam1 As AtemController.MyButton
     Friend WithEvents BtnCam2 As AtemController.MyButton
@@ -1383,10 +1324,7 @@ Partial Class MainForm
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents Label20 As System.Windows.Forms.Label
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents BtnFocus As AtemController.MyButton
     Friend WithEvents BtnAELock As AtemController.MyButton
@@ -1417,12 +1355,10 @@ Partial Class MainForm
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents TextBoxOBSBroadcastTime As System.Windows.Forms.TextBox
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
-    Friend WithEvents TextPlayerTime As System.Windows.Forms.TextBox
     Friend WithEvents BtnMPrev As AtemController.MyButton
     Friend WithEvents BtnOBSBroadcast As AtemController.MyButton
     Friend WithEvents BtnOBSRecord As AtemController.MyButton
     Friend WithEvents TextBoxOBSRecTime As System.Windows.Forms.TextBox
-    Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents BtnPip As AtemController.MyButton
     Friend WithEvents TextBoxPipSrc As System.Windows.Forms.TextBox
     Friend WithEvents BtnMNext As AtemController.MyButton
@@ -1444,4 +1380,8 @@ Partial Class MainForm
     Friend WithEvents LabelCap3 As System.Windows.Forms.Label
     Friend WithEvents TextCaptionOther As System.Windows.Forms.TextBox
     Friend WithEvents BtnInp3 As MyButton
+    Friend WithEvents ButtonEVUp As Button
+    Friend WithEvents ButtonEVDown As Button
+    Friend WithEvents ComboBoxWB As ComboBox
+    Friend WithEvents LabelCap As Label
 End Class
