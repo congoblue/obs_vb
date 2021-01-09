@@ -15,3 +15,16 @@ C:\Users\Boardroom\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemContro
 C:\Users\Boardroom\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.Form2.resources
 C:\Users\Boardroom\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.Resources.resources
 C:\Users\Boardroom\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\obs_vb.vbproj.GenerateResource.Cache
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.exe
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.xml
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.pdb
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\bin\Debug\AtemController.exe
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\bin\Debug\AtemController.pdb
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\bin\Debug\AtemController.xml
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\bin\Debug\WebSocket4Net.dll
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\obs_vb.vbprojResolveAssemblyReference.cache
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.MainForm.resources
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.Form2.resources
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\AtemController.Resources.resources
+C:\Users\timsk\Documents\GitHub\obs_vb\v14_obs v2.0\obj\x86\Debug\obs_vb.vbproj.GenerateResource.Cache

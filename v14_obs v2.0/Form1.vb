@@ -268,6 +268,10 @@ Public Class MainForm
         If _serialPort.IsOpen Then _serialPort.Close()
         If SerialPort1.IsOpen Then SerialPort1.Close()
         'BackgroundWorker1.CancelAsync()
+        SaveSetting("Atemswitcher", "Form", "Top", Me.Top)
+        SaveSetting("Atemswitcher", "Form", "Left", Me.Left)
+        SaveSetting("Atemswitcher", "Form", "Width", Me.Width)
+        SaveSetting("Atemswitcher", "Form", "Height", Me.Height)
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -349,6 +353,8 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim i As Integer
 
+        System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = False
+
         If My.Computer.Keyboard.CtrlKeyDown Then 'Or My.Computer.Keyboard.ShiftKeyDown Then
             ctrlkey = True
         Else
@@ -356,6 +362,12 @@ Public Class MainForm
         End If
 
         Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
+
+        Me.Top = GetSetting("Atemswitcher", "Form", "Top", 0)
+        Me.Left = GetSetting("Atemswitcher", "Form", "Left", 0)
+        Me.Width = GetSetting("Atemswitcher", "Form", "Width", 800)
+        Me.Height = GetSetting("Atemswitcher", "Form", "Height", 600)
+
 
         OpenWebSocket()
 
