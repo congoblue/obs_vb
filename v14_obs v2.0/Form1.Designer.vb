@@ -81,6 +81,7 @@ Partial Class MainForm
         Me.ButtonEVUp = New System.Windows.Forms.Button()
         Me.ButtonEVDown = New System.Windows.Forms.Button()
         Me.ComboBoxWB = New System.Windows.Forms.ComboBox()
+        Me.LabelCap = New System.Windows.Forms.Label()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnPip = New AtemController.MyButton()
         Me.BtnOBSRecord = New AtemController.MyButton()
@@ -122,7 +123,6 @@ Partial Class MainForm
         Me.BtnCam2 = New AtemController.MyButton()
         Me.BtnCam1 = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
-        Me.LabelCap = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'eVISMacrosAppHost
@@ -311,10 +311,10 @@ Partial Class MainForm
         '
         Me.LineShape11.BorderColor = System.Drawing.Color.Yellow
         Me.LineShape11.Name = "LineShape11"
-        Me.LineShape11.X1 = 665
-        Me.LineShape11.X2 = 857
-        Me.LineShape11.Y1 = 250
-        Me.LineShape11.Y2 = 250
+        Me.LineShape11.X1 = 211
+        Me.LineShape11.X2 = 403
+        Me.LineShape11.Y1 = 193
+        Me.LineShape11.Y2 = 193
         '
         'LineShape10
         '
@@ -630,7 +630,7 @@ Partial Class MainForm
         Me.Label28.AutoSize = True
         Me.Label28.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label28.ForeColor = System.Drawing.Color.Yellow
-        Me.Label28.Location = New System.Drawing.Point(629, 242)
+        Me.Label28.Location = New System.Drawing.Point(209, 185)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(74, 16)
         Me.Label28.TabIndex = 313
@@ -645,7 +645,7 @@ Partial Class MainForm
         Me.ListBoxMedia.FormattingEnabled = True
         Me.ListBoxMedia.ItemHeight = 16
         Me.ListBoxMedia.Items.AddRange(New Object() {"..."})
-        Me.ListBoxMedia.Location = New System.Drawing.Point(687, 261)
+        Me.ListBoxMedia.Location = New System.Drawing.Point(261, 205)
         Me.ListBoxMedia.Name = "ListBoxMedia"
         Me.ListBoxMedia.Size = New System.Drawing.Size(142, 82)
         Me.ListBoxMedia.TabIndex = 314
@@ -722,11 +722,22 @@ Partial Class MainForm
         Me.ComboBoxWB.Size = New System.Drawing.Size(89, 24)
         Me.ComboBoxWB.TabIndex = 323
         '
+        'LabelCap
+        '
+        Me.LabelCap.AutoSize = True
+        Me.LabelCap.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelCap.ForeColor = System.Drawing.Color.Yellow
+        Me.LabelCap.Location = New System.Drawing.Point(556, 164)
+        Me.LabelCap.Name = "LabelCap"
+        Me.LabelCap.Size = New System.Drawing.Size(22, 16)
+        Me.LabelCap.TabIndex = 324
+        Me.LabelCap.Text = "Ld"
+        '
         'BtnMNext
         '
         Me.BtnMNext.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMNext.Image = CType(resources.GetObject("BtnMNext.Image"), System.Drawing.Image)
-        Me.BtnMNext.Location = New System.Drawing.Point(640, 303)
+        Me.BtnMNext.Location = New System.Drawing.Point(214, 247)
         Me.BtnMNext.Name = "BtnMNext"
         Me.BtnMNext.Size = New System.Drawing.Size(40, 40)
         Me.BtnMNext.TabIndex = 307
@@ -770,7 +781,7 @@ Partial Class MainForm
         '
         Me.BtnMPrev.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnMPrev.Image = CType(resources.GetObject("BtnMPrev.Image"), System.Drawing.Image)
-        Me.BtnMPrev.Location = New System.Drawing.Point(640, 261)
+        Me.BtnMPrev.Location = New System.Drawing.Point(214, 205)
         Me.BtnMPrev.Name = "BtnMPrev"
         Me.BtnMPrev.Size = New System.Drawing.Size(40, 40)
         Me.BtnMPrev.TabIndex = 290
@@ -1164,23 +1175,12 @@ Partial Class MainForm
         '
         Me.OverrideBtn.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OverrideBtn.Image = CType(resources.GetObject("OverrideBtn.Image"), System.Drawing.Image)
-        Me.OverrideBtn.Location = New System.Drawing.Point(166, 190)
+        Me.OverrideBtn.Location = New System.Drawing.Point(118, 186)
         Me.OverrideBtn.Name = "OverrideBtn"
         Me.OverrideBtn.Size = New System.Drawing.Size(40, 40)
         Me.OverrideBtn.TabIndex = 238
         Me.OverrideBtn.Text = "Over ride"
         Me.OverrideBtn.UseVisualStyleBackColor = True
-        '
-        'LabelCap
-        '
-        Me.LabelCap.AutoSize = True
-        Me.LabelCap.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelCap.ForeColor = System.Drawing.Color.Yellow
-        Me.LabelCap.Location = New System.Drawing.Point(556, 164)
-        Me.LabelCap.Name = "LabelCap"
-        Me.LabelCap.Size = New System.Drawing.Size(22, 16)
-        Me.LabelCap.TabIndex = 324
-        Me.LabelCap.Text = "Ld"
         '
         'MainForm
         '

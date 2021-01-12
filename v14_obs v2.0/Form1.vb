@@ -1695,15 +1695,15 @@ Public Class MainForm
             End If
 
             'also make sure OBS is in the right profile
-            websocket.Send("{""request-type"":""SetCurrentProfile"",""profile-name"":""SJN Youtube live"",""message-id"":""TEST1""}")
+            WebsocketSendAndWait("{""request-type"":""SetCurrentProfile"",""profile-name"":""SJN Youtube live"",""message-id"":""TEST1""}")
             'and open the multiviewer
             'websocket.Send("{""request-type"":""OpenProjector"",""type"":""Multiview"",""monitor"":-1,""message-id"":""TEST1""}")
 
             Timer1.Enabled = True
         End If
-        If (startuptimer = 10) Then 'connect to atem
-            websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Cam1"",""message-id"":""TEST1""}")
-            'websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam2"",""message-id"":""TEST1""}")
+        If (startuptimer = 10) Then 'connect to obs
+            Timer1.Enabled = False
+            WebsocketSendAndWait("{""request-type"":""SetCurrentScene"",""scene-name"":""Cam1"",""message-id"":""TEST1""}")
             'setactive()
             nextpreview = 2
             transitionwait = 2 'will set preview to 2
@@ -1715,10 +1715,12 @@ Public Class MainForm
             '        GroupBox1.Refresh()
             '        Timer1.Enabled = True
             ReadMediaSources()
+            Timer1.Enabled = True
         End If
 
         If (startuptimer = 15) Then 'get/set camera defaults
             Timer1.Enabled = False
+            WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam2"",""message-id"":""TEST1""}")
             For ta = 1 To 4
 
                 ReadbackCameraStates(ta)
