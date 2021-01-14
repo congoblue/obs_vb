@@ -322,15 +322,13 @@ Public Class MainForm
                 kc = 40
                 e.Handled = True
             End If
-            If e.KeyCode = 109 Then 'pgup
-                If e.Modifiers = Keys.Control Then op = "Z10" Else op = "Z40"
-                If kc <> 33 Then SendCamCmd(op)
+            If e.KeyCode = 33 Then 'pgup
+                If kc <> 33 Then CamRunZoom(addr) = 1
                 kc = 33
                 e.Handled = True
             End If
-            If e.KeyCode = 107 Then 'pgup
-                If e.Modifiers = Keys.Control Then op = "Z90" Else op = "Z60"
-                If kc <> 34 Then SendCamCmd(op)
+            If e.KeyCode = 34 Then 'pgup
+                If kc <> 34 Then CamRunZoom(addr) = -1
                 kc = 34
                 e.Handled = True
             End If
@@ -341,7 +339,7 @@ Public Class MainForm
     Private Sub MainForm_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
         If kc <> 0 Then
             If (kc = 33) Or kc = 34 Then
-                SendCamCmd("Z50") 'was zooming
+                CamRunZoom(addr) = 0 'was zooming
             Else
                 SendCamCmd("PTS5050") 'was panning
             End If
