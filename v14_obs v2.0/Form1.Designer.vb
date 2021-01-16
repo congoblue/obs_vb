@@ -1102,7 +1102,7 @@ Partial Class MainForm
         Me.BtnInp3.Name = "BtnInp3"
         Me.BtnInp3.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp3.TabIndex = 147
-        Me.BtnInp3.Text = "CAM5"
+        Me.BtnInp3.Text = "Loop"
         Me.BtnInp3.UseVisualStyleBackColor = True
         '
         'BtnInp2
@@ -1113,7 +1113,7 @@ Partial Class MainForm
         Me.BtnInp2.Name = "BtnInp2"
         Me.BtnInp2.Size = New System.Drawing.Size(50, 50)
         Me.BtnInp2.TabIndex = 146
-        Me.BtnInp2.Text = "HDMI"
+        Me.BtnInp2.Text = "Words"
         Me.BtnInp2.UseVisualStyleBackColor = True
         '
         'BtnInp1

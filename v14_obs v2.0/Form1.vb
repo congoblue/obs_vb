@@ -858,10 +858,9 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub BtnCam1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnCam1.Click, BtnCam2.Click, BtnCam3.Click, BtnCam4.Click, BtnInp3.Click
+    Private Sub BtnCam1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnCam1.Click, BtnCam2.Click, BtnCam3.Click, BtnCam4.Click
         Dim index As Integer
         index = Val(Mid(sender.name, 7))
-        If sender.name = "BtnInp3" Then index = 7
 
         'If _serialPort.IsOpen Then _serialPort.Write(buffer, 0, 7)
 
@@ -1059,7 +1058,7 @@ Public Class MainForm
         End If
         If sender.name = "BtnInp3" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,4 )") ' Overlay (inp 3)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Loop"",""message-id"":""TEST1""}")
             addr = 7
         End If
         If sender.name = "BtnInp4" Then
@@ -1769,13 +1768,7 @@ Public Class MainForm
                 If CamIgnore(4) Then BtnCam4.Text = "CAM4 com-fail" Else BtnCam4.Text = "CAM4"
             End If
 
-            If Globals.Cam5Dis Then 'user disabled
-                CamIgnore(5) = True
-                BtnInp3.Enabled = False 'lock out the button
-                BtnInp3.Text = "CAM5 Disabled"
-            Else 'not user disabled but check for comm loss
-                If CamIgnore(5) Then BtnInp3.Text = "CAM5 com-fail" Else BtnInp3.Text = "CAM5"
-            End If
+
         End If
 
         'timer to stop cam movements once cam is off air
