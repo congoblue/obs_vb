@@ -231,8 +231,9 @@ Public Class MainForm
             request.GetResponse()
 
         Catch ex As System.Net.WebException
-            CamIgnore(caddr) = True
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'CamIgnore(caddr) = True
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            mLog.Text = mLog.Text & "Send " & caddr & ":" & ex.Message & vbCrLf
         End Try
         'CamCmdPending = False
         Return result
@@ -256,8 +257,9 @@ Public Class MainForm
             result = wrespreader.ReadToEnd
 
         Catch ex As System.Net.WebException
-            CamIgnore(caddr) = True
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'CamIgnore(caddr) = True
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            mLog.Text = mLog.Text & "Send " & caddr & ":" & ex.Message & vbCrLf
         End Try
         'CamCmdPending = False
         Return result

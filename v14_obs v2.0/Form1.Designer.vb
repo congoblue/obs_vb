@@ -157,13 +157,12 @@ Partial Class MainForm
         'mLog
         '
         Me.mLog.Font = New System.Drawing.Font("Courier New", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.mLog.Location = New System.Drawing.Point(12, 213)
+        Me.mLog.Location = New System.Drawing.Point(12, 193)
         Me.mLog.Multiline = True
         Me.mLog.Name = "mLog"
-        Me.mLog.Size = New System.Drawing.Size(97, 93)
+        Me.mLog.Size = New System.Drawing.Size(97, 78)
         Me.mLog.TabIndex = 4
         Me.mLog.Text = "Log window"
-        Me.mLog.Visible = False
         '
         'chkLogMessages
         '
