@@ -1,3 +1,3 @@
 # obs_vb
 
-Application to control OBS and Droidcam_OBS for live streaming
+VB Application to control OBS for live streaming using Android phones as cameras with the Droidcam_OBS app.
