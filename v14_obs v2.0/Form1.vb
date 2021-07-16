@@ -219,7 +219,7 @@ Public Class MainForm
         Dim url As String, result As String
         If caddr = 0 Or caddr > 4 Then Return ""
         If CamIgnore(caddr) = True Then Return ""
-        url = "http://" & Globals.CamIP(caddr) & ":4747/v1/" & cmd
+        url = "http://" & Globals.CamIP(caddr) & ":4747/" & cmd
 
         Dim request As HttpWebRequest = HttpWebRequest.Create(url)
         request.Method = "PUT"
@@ -447,7 +447,7 @@ Public Class MainForm
     Sub UpdateCameraControls(ByVal ta As Integer)
         If CamFocusManual(ta) <> 0 Then BtnFocus.BackColor = Color.Green : Else BtnFocus.BackColor = Color.White
         If CamAgc(ta) <> 0 Then BtnAELock.BackColor = Color.Green : Else BtnAELock.BackColor = Color.White
-        TextBoxEV.Text = CamGain(ta) - Int(CamMaxAgc(ta) / 2)
+        TextBoxEV.Text = CamGain(ta) - 50
         If CamWBBlue(ta) < 8 Then ComboBoxWB.SelectedIndex = CamWBBlue(ta)
     End Sub
 
@@ -1339,14 +1339,14 @@ Public Class MainForm
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        SendCamCmdPut(ad, "camera/zoom_level/63")
-        CamZoom(ad) = 63
+        SendCamCmdPut(ad, "v2/camera/zoom_level/100")
+        CamZoom(ad) = 100
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        SendCamCmdPut(ad, "camera/zoom_level/0")
+        SendCamCmdPut(ad, "v2/camera/zoom_level/0")
         CamZoom(ad) = 0
     End Sub
 
@@ -1571,8 +1571,25 @@ Public Class MainForm
 
     'End Sub
 
+    Function GetTag(json As String, tag As String) As String
+        Dim p = InStr(json, tag)
+        If p = 0 Then
+            GetTag = ""
+            Exit Function
+        End If
+        Dim Key = Mid(json, InStr(p, json, ":") + 1)
+        If InStr(Key, ",") <> 0 Then
+            Key = Strings.Left(Key, InStr(Key, ",") - 1)
+        ElseIf InStr(Key, "}") <> 0 Then
+            Key = Strings.Left(Key, InStr(Key, "}") - 1)
+        End If
+        Key = Replace(Key, """", "")
+        GetTag = Key
+    End Function
+
     Sub socketMessage(ByVal s As Object, ByVal e As WebSocket4Net.MessageReceivedEventArgs)
         Dim RecState As String = ""
+        Dim res As String = ""
         Dim StreamState As String = ""
         Dim SceneState As String = ""
         Dim litem As String
@@ -1580,19 +1597,22 @@ Public Class MainForm
         OBSResponse = e.Message
 
         If InStr(OBSResponse, "OBSSTATE") <> 0 Then 'if this is a response to obs rec/stream status message
-            If InStr(OBSResponse, "recording") <> 0 Then
-                RecState = Mid(OBSResponse, InStr(OBSResponse, "recording") + 12, 4)
-                If RecState = "fals" Then OBSRecState = False Else OBSRecState = True
+            res = GetTag(OBSResponse, """recording""")
+            If res <> "" Then
+                RecState = res
+                If RecState = "false" Then OBSRecState = False Else OBSRecState = True
             End If
             If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
             If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
-            If InStr(OBSResponse, "streaming") <> 0 Then
-                StreamState = Mid(OBSResponse, InStr(OBSResponse, "streaming") + 12, 4)
-                If StreamState = "fals" Then OBSStreamState = False Else OBSStreamState = True
+            res = GetTag(OBSResponse, """streaming""")
+            If res <> "" Then
+                StreamState = res
+                If StreamState = "false" Then OBSStreamState = False Else OBSStreamState = True
             End If
             If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
             If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
-            If InStr(OBSResponse, "stream-timecode") <> 0 Then
+            res = GetTag(OBSResponse, """stream-timecode""")
+            If res <> "" Then
                 'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
                 Dim t As Integer = Now.TimeOfDay.TotalSeconds - StreamStartTime
                 Dim hr As Integer = Math.Floor(t / 3600)
@@ -1603,7 +1623,8 @@ Public Class MainForm
                 OBSStreamTime = "..."
             End If
             TextBoxOBSBroadcastTime.Text = OBSStreamTime
-            If InStr(OBSResponse, "rec-timecode") <> 0 Then
+            res = GetTag(OBSResponse, """rec-timecode""")
+            If res <> "" Then
                 'OBSRecTime = Mid(OBSResponse, InStr(OBSResponse, "rec-timecode") + 16, 8)
                 Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
                 Dim hr As Integer = Math.Floor(t / 3600)
@@ -1616,8 +1637,9 @@ Public Class MainForm
             TextBoxOBSRecTime.Text = OBSRecTime
             'End If
         ElseIf InStr(OBSResponse, "OBSSCENE") <> 0 Then 'response as we are playing a clip. Watch out for it ending.
-            If InStr(OBSResponse, "name") <> 0 Then
-                SceneState = Mid(OBSResponse, InStr(OBSResponse, "name") + 8, 3)
+            res = GetTag(OBSResponse, "name")
+            If res <> "" Then
+                SceneState = res
             End If
         ElseIf InStr(OBSResponse, "PreviewSceneChanged") Then 'user has changed the preview scene on OBS
             'Dim scenename As String
@@ -1628,15 +1650,14 @@ Public Class MainForm
             'If (scenename = "Cam3") Then addr = 3 : setactive()
         ElseIf InStr(OBSResponse, "GETSCENE") <> 0 Then 'response to get scene list, used to populate media list
             SceneState = Mid(OBSResponse, InStr(OBSResponse, "Mediaplayer1") + 12)
-            SceneState = Mid(SceneState, InStr(SceneState, """sources"":") + 10)
-            If InStr(SceneState, """sources"":") <> 0 Then SceneState = Mid(SceneState, 1, InStr(SceneState, """sources"":") - 40) 'if other scenes after this one, remove them
+            SceneState = Mid(SceneState, InStr(SceneState, "sources") + 1)
+            'If InStr(SceneState, """sources"":") <> 0 Then SceneState = Mid(SceneState, 1, InStr(SceneState, """sources"":") - 40) 'if other scenes after this one, remove them
             Debug.Print(SceneState)
             p = 1 : ct = 0
             While p <> 0
-                p = InStr(p, SceneState, """name""")
-                q = InStr(p + 9, SceneState, """")
-                If p <> 0 Then
-                    litem = Mid(SceneState, p + 9, q - p - 9)
+                res = GetTag(SceneState, "name")
+                If res <> "" Then
+                    litem = res
                     If ct = 0 Then
                         websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":true,""message-id"":""TEST1""}")
                         litem = litem & "*"
@@ -1644,7 +1665,8 @@ Public Class MainForm
                         websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":false,""message-id"":""TEST1""}")
                     End If
                     ListBoxMedia.Invoke(Sub() ListBoxMedia.Items.Add(litem))
-                    p = q
+                    SceneState = Mid(SceneState, InStr(SceneState, "name") + 6)
+                    p = InStr(SceneState, """name""")
                     ct = ct + 1
                 End If
             End While
@@ -1957,7 +1979,7 @@ Public Class MainForm
         For i = 1 To 4
             If CamRunZoom(i) <> 0 Then
                 If CamRunZoom(i) = 1 Then
-                    If CamZoom(i) < 63 Then
+                    If CamZoom(i) < 100 Then
                         CamZoom(i) = CamZoom(i) + 1
                     Else
                         CamRunZoom(i) = 0
@@ -1969,7 +1991,7 @@ Public Class MainForm
                         CamRunZoom(i) = 0
                     End If
                 End If
-                SendCamCmdPut(addr, "camera/zoom_level/" & CamZoom(i))
+                SendCamCmdPut(addr, "v2/camera/zoom_level/" & CamZoom(i))
             End If
         Next
 
@@ -2017,10 +2039,10 @@ Public Class MainForm
 
     Private Sub BtnFocus_Click(sender As Object, e As EventArgs) Handles BtnFocus.Click
         If CamFocusManual(addr) = 0 Then
-            SendCamCmdPut(addr, "camera/autofocus_mode/2")
+            SendCamCmdPut(addr, "v1/camera/autofocus_mode/0")
             CamFocusManual(addr) = 2
         Else
-            SendCamCmdPut(addr, "camera/autofocus_mode/0")
+            SendCamCmdPut(addr, "v1/camera/autofocus")
             CamFocusManual(addr) = 0
         End If
         UpdateCameraControls(addr)
@@ -2028,19 +2050,19 @@ Public Class MainForm
 
     Private Sub BtnAELock_Click(sender As Object, e As EventArgs) Handles BtnAELock.Click
         If CamAgc(addr) = 0 Then
-            SendCamCmdPut(addr, "camera/exposure_lock/1")
+            SendCamCmdPut(addr, "v1/camera/el_toggle")
             CamAgc(addr) = 1
         Else
-            SendCamCmdPut(addr, "camera/exposure_lock/0")
+            SendCamCmdPut(addr, "v1/camera/el_toggle")
             CamAgc(addr) = 0
         End If
         UpdateCameraControls(addr)
     End Sub
 
     Private Sub ButtonEVUp_Click(sender As Object, e As EventArgs) Handles ButtonEVUp.Click
-        If CamGain(addr) < CamMaxAgc(addr) Then
+        If CamGain(addr) < 100 Then
             CamGain(addr) = CamGain(addr) + 1
-            SendCamCmdPut(addr, "camera/ev_level/" & CamGain(addr))
+            SendCamCmdPut(addr, "v2/camera/ev_level/" & CamGain(addr))
         End If
         UpdateCameraControls(addr)
     End Sub
@@ -2048,7 +2070,7 @@ Public Class MainForm
     Private Sub ButtonEVDown_Click(sender As Object, e As EventArgs) Handles ButtonEVDown.Click
         If CamGain(addr) > 0 Then
             CamGain(addr) = CamGain(addr) - 1
-            SendCamCmdPut(addr, "camera/ev_level/" & CamGain(addr))
+            SendCamCmdPut(addr, "v2/camera/ev_level/" & CamGain(addr))
         End If
         UpdateCameraControls(addr)
 
@@ -2056,7 +2078,7 @@ Public Class MainForm
 
     Private Sub ComboBoxWB_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxWB.SelectionChangeCommitted
         CamWBBlue(addr) = ComboBoxWB.SelectedIndex
-        SendCamCmdPut(addr, "camera/wb_mode/" & CamWBBlue(addr))
+        SendCamCmdPut(addr, "v1/camera/wb_mode/" & CamWBBlue(addr))
         UpdateCameraControls(addr)
     End Sub
 
